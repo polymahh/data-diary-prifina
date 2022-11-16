@@ -7,15 +7,37 @@ import {
   getSleepSummaryWeekData,
   getActivitySummaryWeekData
 } from "./ouraZoom.js"
+import {
+  getGoogleActivityWeekData,
+  getGoogleLocationWeekData,
+  getGooglePlacesWeekWeekData,
+  getGoogleRoutesWeekWeekData,
+} from "./googleZoom.js"
 import { useState,useCallback, useEffect } from "react";
 import Year from "./Year";
 import React, { Fragment, useMemo } from 'react'
 
 // const localizer = Calendar.momentLocalizer(moment); // or globalizeLocalizer
 // localizer.formats.yearHeaderFormat = "YYYY";
-const events = [
+const ouraEvents = [
   {
     summary_date: "2022-11-06",
+    prifinaSourceType: "Oura",
+    prifinaSourceEventType: "Readiness",
+    period_id: 0,
+    score: 62,
+    score_previous_night: 5,
+    score_sleep_balance: 75,
+    score_previous_day: 61,
+    score_activity_balance: 77,
+    score_resting_hr: 98,
+    score_hrv_balance: 90,
+    score_recovery_index: 45,
+    score_temperature: 86,
+    rest_mode_state: 0,
+  },
+  {
+    summary_date: "2022-10-06",
     prifinaSourceType: "Oura",
     prifinaSourceEventType: "Readiness",
     period_id: 0,
@@ -251,6 +273,215 @@ const events = [
   }
 ]
 
+const googleEvents = [
+  {
+    p_timestamp: 1667445628000,
+    p_datetime: "2022-11-03T03:20:28.681Z",
+    p_latitude: 602447266,
+    p_longitude: 247573079,
+    p_accuracy: 32,
+    p_altitude: 111,
+    p_verticalaccuracy: 1,
+    p_heading: 230,
+    prifinaSourceType: "Google",
+    prifinaSourceEventType: "Location",
+  },
+  {
+    p_timestamp: 1667448169000,
+    p_datetime: "2022-11-03T04:02:49.426Z",
+    p_latitude: 602446995,
+    p_longitude: 247574923,
+    p_accuracy: 64,
+    p_altitude: 111,
+    p_verticalaccuracy: 1,
+    p_heading: 200,
+    prifinaSourceType: "Google",
+    prifinaSourceEventType: "Location",
+  },
+  {
+    p_timestamp: 1417576831121,
+    p_datetime: "2014-12-03T03:20:31.121Z",
+    p_type: "STILL",
+    p_confidence: 87,
+    prifinaSourceType: "Google",
+    prifinaSourceEventType: "Activity",
+  },
+  {
+    p_timestamp: 1417576831121,
+    p_datetime: "2014-12-03T03:20:31.121Z",
+    p_type: "UNKNOWN",
+    p_confidence: 10,
+    prifinaSourceType: "Google",
+    prifinaSourceEventType: "Activity",
+  },
+  {
+    p_timestamp: 1417576831121,
+    p_datetime: "2014-12-03T03:20:31.121Z",
+    p_type: "IN_VEHICLE",
+    p_confidence: 3,
+    prifinaSourceType: "Google",
+    prifinaSourceEventType: "Activity",
+  },
+  {
+    p_timestamp: 1417577043477,
+    p_datetime: "2014-12-03T03:24:03.477Z",
+    p_type: "STILL",
+    p_confidence: 100,
+    prifinaSourceType: "Google",
+    prifinaSourceEventType: "Activity",
+  },
+  {
+    latitudeE7: 606224118,
+    longitudeE7: 248047081,
+    address: "Mäkikuumolantie 3\n05800 Hyvinkää\nSuomi",
+    name: "Lidl Sveitsin Portaali",
+    locationConfidence: 80,
+    placeConfidence: "HIGH_CONFIDENCE",
+    visitConfidence: 88,
+    placeVisitType: "SINGLE_PLACE",
+    placeVisitImportance: "MAIN",
+    startTimestamp: "2022-02-01T09:24:24.250Z",
+    endTimestamp: "2022-02-01T09:40:22.633Z",
+    prifinaSourceType: "Google",
+    prifinaSourceEventType: "Place",
+  },
+  {
+    latitudeE7: 606224118,
+    longitudeE7: 248047081,
+    address: "Mäkikuumolantie 3\n05800 Hyvinkää\nSuomi",
+    name: "Lidl Sveitsin Portaali",
+    locationConfidence: 80,
+    placeConfidence: "HIGH_CONFIDENCE",
+    visitConfidence: 88,
+    placeVisitType: "SINGLE_PLACE",
+    placeVisitImportance: "MAIN",
+    startTimestamp: "2022-02-01T09:24:24.250Z",
+    endTimestamp: "2022-02-01T09:55:22.633Z",
+    prifinaSourceType: "Google",
+    prifinaSourceEventType: "Place",
+  },
+  {
+    startLocation: { latitudeE7: 605841426, longitudeE7: 248303862 },
+    endLocation: { latitudeE7: 606216471, longitudeE7: 248040694 },
+    distance: 4410,
+    confidence: "HIGH",
+    activityType: "IN_PASSENGER_VEHICLE",
+    startTimestamp: "2022-02-01T09:12:21.890Z",
+    endTimestamp: "2022-02-01T09:24:24.250Z",
+    prifinaSourceType: "Google",
+    prifinaSourceEventType: "Route",
+  }
+]
+
+const whoopEvents = [
+  {
+    "id": 1043,
+    prifinaSourceType: "Whoop",
+    prifinaSourceEventType: "Workout",
+    "user_id": 9012,
+    "created_at": "2022-04-24T11:25:44.774Z",
+    "updated_at": "2022-04-24T14:25:44.774Z",
+    "start": "2022-04-24T02:25:44.774Z",
+    "end": "2022-04-24T10:25:44.774Z",
+    "timezone_offset": "-05:00",
+    "sport_id": 1,
+    "score_state": "SCORED",
+    "score": {
+      "strain": 8.2463,
+      "average_heart_rate": 123,
+      "max_heart_rate": 146,
+      "kilojoule": 1569.34033203125,
+      "percent_recorded": 100,
+      "distance_meter": 1772.77035916,
+      "altitude_gain_meter": 46.64384460449,
+      "altitude_change_meter": -0.781372010707855,
+      "zone_duration": {
+        "zone_zero_milli": 13458,
+        "zone_one_milli": 389370,
+        "zone_two_milli": 388367,
+        "zone_three_milli": 71137,
+        "zone_four_milli": 0,
+        "zone_five_milli": 0
+      }
+    }
+  },
+  {
+    "id": 93845,
+    "user_id": 10129,
+    prifinaSourceType: "Whoop",
+    prifinaSourceEventType: "Cycle",
+    "created_at": "2022-04-24T11:25:44.774Z",
+    "updated_at": "2022-04-24T14:25:44.774Z",
+    "start": "2022-04-24T02:25:44.774Z",
+    "end": "2022-04-24T10:25:44.774Z",
+    "timezone_offset": "-05:00",
+    "score_state": "SCORED",
+    "score": {
+      "strain": 5.2951527,
+      "kilojoule": 8288.297,
+      "average_heart_rate": 68,
+      "max_heart_rate": 141
+    }
+  },
+  {
+    "cycle_id": 93845,
+    "sleep_id": 10235,
+    "user_id": 10129,
+    prifinaSourceType: "Whoop",
+    prifinaSourceEventType: "Recovery",
+    "created_at": "2022-04-24T11:25:44.774Z",
+    "updated_at": "2022-04-24T14:25:44.774Z",
+    "score_state": "SCORED",
+    "score": {
+      "user_calibrating": false,
+      "recovery_score": 44,
+      "resting_heart_rate": 64,
+      "hrv_rmssd_milli": 31.813562,
+      "spo2_percentage": 95.6875,
+      "skin_temp_celsius": 33.7
+    }
+  },
+  {
+    "id": 93845,
+    "user_id": 10129,
+    prifinaSourceType: "Whoop",
+    prifinaSourceEventType: "Sleep",
+    "created_at": "2022-04-24T11:25:44.774Z",
+    "updated_at": "2022-04-24T14:25:44.774Z",
+    "start": "2022-04-24T02:25:44.774Z",
+    "end": "2022-04-24T10:25:44.774Z",
+    "timezone_offset": "-05:00",
+    "nap": false,
+    "score_state": "SCORED",
+    "score": {
+      "stage_summary": {
+        "total_in_bed_time_milli": 30272735,
+        "total_awake_time_milli": 1403507,
+        "total_no_data_time_milli": 0,
+        "total_light_sleep_time_milli": 14905851,
+        "total_slow_wave_sleep_time_milli": 6630370,
+        "total_rem_sleep_time_milli": 5879573,
+        "sleep_cycle_count": 3,
+        "disturbance_count": 12
+      },
+      "sleep_needed": {
+        "baseline_milli": 27395716,
+        "need_from_sleep_debt_milli": 352230,
+        "need_from_recent_strain_milli": 208595,
+        "need_from_recent_nap_milli": -12312
+      },
+      "respiratory_rate": 16.11328125,
+      "sleep_performance_percentage": 98,
+      "sleep_consistency_percentage": 90,
+      "sleep_efficiency_percentage": 91.69533848
+    }
+  }
+]
+
+const events = [].concat(...ouraEvents,...googleEvents,...whoopEvents)
+
+
+
 const varToString = (attr) => {
   var str = attr.split("_")
   for (var i = 0; i< str.length; i++){
@@ -294,6 +525,56 @@ for (var i =0; i< events.length;i++){
               // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
               start: new Date(events[i].summary_date),
               end: new Date(events[i].summary_date),
+              data: events[i],
+            })
+            break
+          default:
+            break
+        }
+        break
+      case "Google":
+        switch(events[i].prifinaSourceEventType){
+          case "Route":
+            myEventsList.push({
+              title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].startTimestamp.split("T")[0]}`,
+              allDay: false,
+              // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+              // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+              start: new Date(events[i].startTimestamp),
+              end: new Date(events[i].endTimestamp),
+              data: events[i],
+            })
+            break
+          case "Place":
+            myEventsList.push({
+              title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].startTimestamp.split("T")[0]}`,
+              allDay: false,
+              // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+              // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+              start: new Date(events[i].startTimestamp),
+              end: new Date(events[i].endTimestamp),
+              data: events[i],
+            })
+            break
+          case "Activity":
+            myEventsList.push({
+              title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].p_datetime}`,
+              allDay: false,
+              // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+              // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+              start: new Date(events[i].p_datetime),
+              end: new Date((new Date(events[i].p_datetime)).getTime()+1),
+              data: events[i],
+            })
+            break
+          case "Location":
+            myEventsList.push({
+              title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].p_datetime}`,
+              allDay: false,
+              // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+              // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+              start: new Date(events[i].p_datetime),
+              end: new Date((new Date(events[i].p_datetime)).getTime()+1),
               data: events[i],
             })
             break
@@ -414,6 +695,55 @@ const getZoomData = () => {
             }
           })
           break
+        case "Google":
+          value.forEach((type)=>{
+            finalData[key][type] = {}
+            typesShown[key][type] = false
+            switch(type){
+              case "Activity":
+                finalData[key][type] = getGoogleActivityWeekData("ActivityWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Location":
+                finalData[key][type] = getGoogleLocationWeekData("LocationWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                // console.log(finalData[key])
+                break
+              case "Route":
+                finalData[key][type] = getGoogleRoutesWeekWeekData("RoutesWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                // console.log(finalData[key])
+                break
+              case "Place":
+                finalData[key][type] = getGooglePlacesWeekWeekData("PlacesWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                // console.log(finalData[key])
+                break
+              default:
+                break
+            }
+          })
+          break
         default:
           break
       }
@@ -495,12 +825,181 @@ const getZoomData = () => {
             }
           })
           break
+        case "Google":
+          value.forEach((type)=>{
+            finalData[key][type] = {}
+            typesShown[key][type] = false
+            switch(type){
+              case "Activity":
+                finalData[key][type] = getGoogleActivityWeekData("ActivityWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Location":
+                finalData[key][type] = getGoogleLocationWeekData("LocationWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                // console.log(finalData[key])
+                break
+              case "Route":
+                finalData[key][type] = getGoogleRoutesWeekWeekData("RoutesWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                // console.log(finalData[key])
+                break
+              case "Place":
+                finalData[key][type] = getGooglePlacesWeekWeekData("PlacesWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                // console.log(finalData[key])
+                break
+              default:
+                break
+            }
+          })
+          break
         default:
           break
       }
     })
-  } else {
+  } else if (view === "year") {
+    var start = range[0]
+    var end = new Date("2022-01-01")
+    end.setFullYear(start.getFullYear() + 1)
 
+    filteredData = myEventsList.filter((event)=>{
+      // console.log("",event)
+        // console.log(range[i].getDate())
+        if (start.getTime() < event.start.getTime()&&end.getTime() > event.start.getTime()){
+          return true
+        } else {
+          return false
+        }
+    })
+    console.log(filteredData)
+    var sources = {}
+    for (var i = 0; i< filteredData.length;i++){
+      if (sources[filteredData[i].data.prifinaSourceType]===undefined){
+        sources[filteredData[i].data.prifinaSourceType] = [filteredData[i].data.prifinaSourceEventType] 
+      } else if (!sources[filteredData[i].data.prifinaSourceType].includes(filteredData[i].data.prifinaSourceEventType)) {
+        sources[filteredData[i].data.prifinaSourceType].push(filteredData[i].data.prifinaSourceEventType)
+      }
+    }
+    // console.log(sources)
+    Object.entries(sources).forEach(([key, value])=>{
+      finalData[key] = {}
+      sourceData[key] = false
+      typesShown[key] = {}
+
+      switch(key){
+        case "Oura":
+          value.forEach((type)=>{
+            finalData[key][type] = {}
+            typesShown[key][type] = false
+            switch(type){
+              case "Readiness":
+                finalData[key][type] = getReadinessSummaryWeekData("ReadinessWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === "Oura" && event.data.prifinaSourceEventType === "Readiness"){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "SleepSummary":
+                finalData[key][type] = getSleepSummaryWeekData("SleepWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === "Oura" && event.data.prifinaSourceEventType === "SleepSummary"){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                // console.log(finalData[key])
+                break
+              case "Activity":
+                finalData[key][type] = getActivitySummaryWeekData("ActivityWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === "Oura" && event.data.prifinaSourceEventType === "Activity"){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                // console.log(finalData[key])
+                break
+              default:
+                break
+            }
+          })
+          break
+        case "Google":
+          value.forEach((type)=>{
+            finalData[key][type] = {}
+            typesShown[key][type] = false
+            switch(type){
+              case "Activity":
+                finalData[key][type] = getGoogleActivityWeekData("ActivityWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Location":
+                finalData[key][type] = getGoogleLocationWeekData("LocationWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                // console.log(finalData[key])
+                break
+              case "Route":
+                finalData[key][type] = getGoogleRoutesWeekWeekData("RoutesWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                // console.log(finalData[key])
+                break
+              case "Place":
+                finalData[key][type] = getGooglePlacesWeekWeekData("PlacesWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                // console.log(finalData[key])
+                break
+              default:
+                break
+            }
+          })
+          break
+        default:
+          break
+      }
+    })
   }
   // console.log(finalData)
   // console.log("sd",sourceData)
@@ -525,7 +1024,25 @@ const secondsDisplay = (total) => {
   if (hours < 10){
     hours =  `0${hours}`
   }
-  return `${hours}:${mintues}:${seconds%60}`
+  return `${hours}:${mintues}:${seconds}`
+}
+const millisecondsDisplay = (total) => {
+  var totalSeconds = Math.floor(total/1000)
+  var milliseconds = total%1000
+  var hours = Math.floor(Math.floor(totalSeconds / 60)/60)
+  var mintues = Math.floor(totalSeconds / 60)%60
+  var seconds = totalSeconds % 60
+  seconds.toFixed(3)
+  if (seconds < 10){
+    seconds =  `0${seconds}`
+  }
+  if (mintues < 10){
+    mintues =  `0${mintues}`
+  }
+  if (hours < 10){
+    hours =  `0${hours}`
+  }
+  return `${hours}:${mintues}:${seconds}.${milliseconds}`
 }
 
 useEffect(() => {
@@ -590,6 +1107,57 @@ const dataView = (source, type, aggregateData) => {
               break
           }
           break
+        case "Google":
+          switch(type){
+            case "Activity":
+              return (
+                <>
+                  <p>Still Activities: {aggregateData.types["STILL"]}</p>
+                  <p>In Vehicle Activities: {aggregateData.types["IN_VEHICLE"]}</p>
+                  <p>Unknown Activities: {aggregateData.types["UNKNOWN"]}</p>
+                  <p>Average Confidence: {aggregateData.confidence}%</p>
+                </>
+              )
+            case "Location":
+              console.log("test")
+              return (
+                <>
+                  <p>Average Accuracy: {aggregateData.accuracy}%</p>
+                  <p>Average Vertical Accuracy: {aggregateData.verticalAccuracy}%</p>
+                  <p>Average Altitude: {aggregateData.altitude}m</p>
+                </>
+              )
+            case "Place":
+              return (
+                <>
+                  <p>Average Time Spent: {millisecondsDisplay(aggregateData.timeSpent.avg)}</p>
+                  <p>Longest Stay: {millisecondsDisplay(aggregateData.timeSpent.max)}</p>
+                  <p>Shortest Stay: {millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                  <p>Average Location Confidence: {aggregateData.locationConfidence}%</p>
+                  <p>Average Visit Confidence: {aggregateData.visitConfidence}%</p>
+                  <p>High Confidence: {aggregateData.placeConfidence["HIGH_CONFIDENCE"]}</p>
+                  <p>Medium Confidence: {aggregateData.placeConfidence["MEDIUM_CONFIDENCE"]}</p>
+                  <p>Low Confidence: {aggregateData.placeConfidence["LOW_CONFIDENCE"]}</p>
+                </>
+              )
+            case "Route":
+              return (
+                <>
+                  <p>Average Time Spent: {millisecondsDisplay(aggregateData.timeSpent.avg)}</p>
+                  <p>Longest Route: {millisecondsDisplay(aggregateData.timeSpent.max)}</p>
+                  <p>Shortest Route: {millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                  <p>Average Distance: {aggregateData.distance.avg}</p>
+                  <p>Max Distance: {aggregateData.distance.max}</p>
+                  <p>Minimum Distance: {aggregateData.distance.min}</p>
+                  <p>High Confidence: {aggregateData.confidence["HIGH"]}</p>
+                  <p>Medium Confidence: {aggregateData.confidence["MEDIUM"]}</p>
+                  <p>Low Confidence: {aggregateData.confidence["LOW"]}</p>
+                </>
+              )
+            default:
+              break
+          }
+          break    
         default:
           break
       }
@@ -648,11 +1216,170 @@ const dataView = (source, type, aggregateData) => {
               break
           }
           break
+        case "Google":
+          switch(type){
+            case "Activity":
+              return (
+                <>
+                  <p>Still Activities: {aggregateData.types["STILL"]}</p>
+                  <p>In Vehicle Activities: {aggregateData.types["IN_VEHICLE"]}</p>
+                  <p>Unknown Activities: {aggregateData.types["UNKNOWN"]}</p>
+                  <p>Average Confidence: {aggregateData.confidence}%</p>
+                </>
+              )
+            case "Location":
+              console.log("test")
+              return (
+                <>
+                  <p>Average Accuracy: {aggregateData.accuracy}%</p>
+                  <p>Average Vertical Accuracy: {aggregateData.verticalAccuracy}%</p>
+                  <p>Average Altitude: {aggregateData.altitude}m</p>
+                </>
+              )
+            case "Place":
+              return (
+                <>
+                  <p>Average Time Spent: {millisecondsDisplay(aggregateData.timeSpent.avg)}</p>
+                  <p>Longest Stay: {millisecondsDisplay(aggregateData.timeSpent.max)}</p>
+                  <p>Shortest Stay: {millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                  <p>Average Location Confidence: {aggregateData.locationConfidence}%</p>
+                  <p>Average Visit Confidence: {aggregateData.visitConfidence}%</p>
+                  <p>High Confidence: {aggregateData.placeConfidence["HIGH_CONFIDENCE"]}</p>
+                  <p>Medium Confidence: {aggregateData.placeConfidence["MEDIUM_CONFIDENCE"]}</p>
+                  <p>Low Confidence: {aggregateData.placeConfidence["LOW_CONFIDENCE"]}</p>
+                </>
+              )
+            case "Route":
+              return (
+                <>
+                  <p>Average Time Spent: {millisecondsDisplay(aggregateData.timeSpent.avg)}</p>
+                  <p>Longest Route: {millisecondsDisplay(aggregateData.timeSpent.max)}</p>
+                  <p>Shortest Route: {millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                  <p>Average Distance: {aggregateData.distance.avg}</p>
+                  <p>Max Distance: {aggregateData.distance.max}</p>
+                  <p>Minimum Distance: {aggregateData.distance.min}</p>
+                  <p>High Confidence: {aggregateData.confidence["HIGH"]}</p>
+                  <p>Medium Confidence: {aggregateData.confidence["MEDIUM"]}</p>
+                  <p>Low Confidence: {aggregateData.confidence["LOW"]}</p>
+                </>
+              )
+            default:
+              break
+          }
+          break
         default:
           break
       }
       break
     case "year":
+      switch(source){
+        case "Oura":
+          switch(type){
+            case "Readiness":
+              return (
+                <>
+                  <p>Score: {aggregateData.score}%</p>
+                  <p>Previous Night Score: {aggregateData.score_previous_night}%</p>
+                  <p>Sleep Balance Score: {aggregateData.score_sleep_balance}%</p>
+                  <p>Previous Day Score: {aggregateData.score_previous_day}%</p>
+                  <p>Activity Balance Score: {aggregateData.score_activity_balance}%</p>
+                  <p>Resting HR Score: {aggregateData.score_resting_hr}%</p>
+                  <p>HRV Balance Score: {aggregateData.score_hrv_balance}%</p>
+                  <p>Recovery Index Score: {aggregateData.score_recovery_index}%</p>
+                  <p>Temperature Score: {aggregateData.score_temperature}%</p>
+                </>
+              )
+            case "SleepSummary":
+              return (
+                <>
+                  <p>Sleep (hrs): {secondsDisplay(aggregateData.sleep.total)}/{secondsDisplay(aggregateData.sleep.duration)} <i>({secondsDisplay(aggregateData.sleep.avgTotal)}/{secondsDisplay(aggregateData.sleep.avgDuration)})</i></p>
+                  <p>Average Score: {aggregateData.score}%</p>
+                  <p>Average Efficiency: {aggregateData.efficiency}%</p>
+                  <p>Average Heart Rate: {aggregateData.hr_average}bpm</p>
+                  <p>Average Respiratory Rate: {aggregateData.breath_average}b/m</p>
+                  <p>Trend of HRRV: {aggregateData.rmssd.averageTrend> 0 ? (
+                    <>
+                    +
+                    </>
+                  ): (
+                    <>
+                    </>
+                  )}{aggregateData.rmssd.averageTrend}</p>
+                </>
+              )
+            case "Activity":
+              return (
+                <>
+                  <p>Average Score: {aggregateData.score}%</p>
+                  <p>Average Day Movement: {aggregateData.movement.avgSteps} steps + {aggregateData.movement.avgMovement}m</p>
+                  <p>Total Movement: {aggregateData.movement.totalSteps} steps + {aggregateData.movement.totalMovement}m</p>
+                  <p>Non-Wear: {aggregateData.non_wear.percent.toFixed(3)}%</p>
+                  <p>Inactivity Alerts: {aggregateData.inactivity_alerts}</p>
+                  <p>Calories Burnt (kcals): {aggregateData.cals.totalCalActive}/{aggregateData.cals.totalCalTotal} <i>({aggregateData.cals.avgCalActive}/{aggregateData.cals.avgCalTotal})</i></p>
+                  <p>Average MET Level: {aggregateData.met.avg.toFixed(3)} MET</p>
+                  <p>Highest MET Level: {aggregateData.met.high} MET</p>
+                  <p>Lowest MET Level: {aggregateData.met.low} MET</p>
+                </>
+              )
+            default:
+              break
+          }
+          break
+        case "Google":
+        switch(type){
+          case "Activity":
+            return (
+              <>
+                <p>Still Activities: {aggregateData.types["STILL"]}</p>
+                <p>In Vehicle Activities: {aggregateData.types["IN_VEHICLE"]}</p>
+                <p>Unknown Activities: {aggregateData.types["UNKNOWN"]}</p>
+                <p>Average Confidence: {aggregateData.confidence}%</p>
+              </>
+            )
+          case "Location":
+            console.log("test")
+            return (
+              <>
+                <p>Average Accuracy: {aggregateData.accuracy}%</p>
+                <p>Average Vertical Accuracy: {aggregateData.verticalAccuracy}%</p>
+                <p>Average Altitude: {aggregateData.altitude}m</p>
+              </>
+            )
+          case "Place":
+            return (
+              <>
+                <p>Average Time Spent: {millisecondsDisplay(aggregateData.timeSpent.avg)}</p>
+                <p>Longest Stay: {millisecondsDisplay(aggregateData.timeSpent.max)}</p>
+                <p>Shortest Stay: {millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                <p>Average Location Confidence: {aggregateData.locationConfidence}%</p>
+                <p>Average Visit Confidence: {aggregateData.visitConfidence}%</p>
+                <p>High Confidence: {aggregateData.placeConfidence["HIGH_CONFIDENCE"]}</p>
+                <p>Medium Confidence: {aggregateData.placeConfidence["MEDIUM_CONFIDENCE"]}</p>
+                <p>Low Confidence: {aggregateData.placeConfidence["LOW_CONFIDENCE"]}</p>
+              </>
+            )
+          case "Route":
+            return (
+              <>
+                <p>Average Time Spent: {millisecondsDisplay(aggregateData.timeSpent.avg)}</p>
+                <p>Longest Route: {millisecondsDisplay(aggregateData.timeSpent.max)}</p>
+                <p>Shortest Route: {millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                <p>Average Distance: {aggregateData.distance.avg}</p>
+                <p>Max Distance: {aggregateData.distance.max}</p>
+                <p>Minimum Distance: {aggregateData.distance.min}</p>
+                <p>High Confidence: {aggregateData.confidence["HIGH"]}</p>
+                <p>Medium Confidence: {aggregateData.confidence["MEDIUM"]}</p>
+                <p>Low Confidence: {aggregateData.confidence["LOW"]}</p>
+              </>
+            )
+          default:
+            break
+        }
+        break
+        default:
+          break
+      }
+      break
       break
     default:
       break
@@ -823,6 +1550,65 @@ const lengthCalc = (source) => {
       {view === "year"? (
         <>
         <h2>Year View</h2>
+        {
+          Object.entries(zoomData).map(([source, value])=>(
+              <>
+              <p><button onClick={() => {
+                setSourcesShown({
+                  ...sourcesShown,
+                  [source]: !sourcesShown[source]
+                }
+                )
+              }}>{sourcesShown[source] ? (
+                <>
+                ▾
+                </>
+              ):(<>
+              ▸
+              </>)}</button>{source} - {lengthCalc(source)}</p>
+              {
+                    sourcesShown[source] ? (
+                      <>
+                      {
+                          Object.entries(zoomData[source]).map(([type, value])=>(
+                            <>
+                            <p><button onClick={() => {
+                              setTypesShown({
+                                ...typesShown,
+                                [source]: {
+                                  ...typesShown[source],
+                                  [type]: !typesShown[source][type]
+                                }
+                              }
+                              )
+                            }}>{typesShown[source][type] ? (
+                              <>
+                              ▾
+                              </>
+                            ):(<>
+                            ▸
+                            </>)}</button>{type} - {zoomData[source][type]["length"]}</p>
+                            {
+                              typesShown[source][type] ? (
+                                dataView(source,type,zoomData[source][type]["aggregate"])
+                              ) : (
+                                <>
+                                </>
+                              ) 
+                            }
+                            </>
+                          ))
+                        }
+                      </>
+                    ) : (
+                      <>
+                      </>
+                    ) 
+                  }
+              
+              </>
+          ))
+        }
         </>
       ): (
         <>

@@ -1190,6 +1190,11 @@
   resolved "https://registry.yarnpkg.com/@csstools/selector-specificity/-/selector-specificity-2.0.2.tgz#1bfafe4b7ed0f3e4105837e056e0a89b108ebe36"
   integrity sha512-IkpVW/ehM1hWKln4fCA3NzJU8KwD+kIOvPZA4cqxoJHtE21CCzjyp+Kxbu0i5I4tBNOlXPL9mjwnWlL0VEG4Fg==
 
+"@dynamic-data/google-data@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@dynamic-data/google-data/-/google-data-0.0.9.tgz#cd6a429b3ae52274859be9f5e0f7af358e36ba98"
+  integrity sha512-bvIPrZcuRe0+nfoigJv/yYL401cZNBmnNp41kXU9eYjcOQWJP0AM40LoXB2K9kdarX6JMxvdwuuISQ4GoeaDWQ==
+
 "@dynamic-data/oura-data@^0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@dynamic-data/oura-data/-/oura-data-0.0.9.tgz#b3058e8a64341ca3cad6249bc4a72e7b9435a24b"
@@ -1199,6 +1204,11 @@
   version "0.0.12"
   resolved "https://registry.yarnpkg.com/@dynamic-data/utils/-/utils-0.0.12.tgz#60d5ee595eb5b908402e01f81fd5ef0a9abce1fc"
   integrity sha512-xJstQjzI+yo7fteNL981pvGaYZ4mSbIinAcJLOw0QMJ5ZuM0B0aWgtJY50wqf2hQ0Ozxnvvlq37oZIB3Ze0kXw==
+
+"@dynamic-data/whoop-data@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@dynamic-data/whoop-data/-/whoop-data-0.0.10.tgz#509c2f82f42b9c7f263e8c76bd93479431d0dab1"
+  integrity sha512-0IQtoa9e+x6VOSwtiQDKKl0Pp1UaWDjopsdl61GpDMZMf8UldBWqe7Rs0gygMYGpL5azrsHJOZqrpcrF5jQb0w==
 
 "@eslint/eslintrc@^1.3.3":
   version "1.3.3"
