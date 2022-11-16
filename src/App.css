@@ -1,38 +1,66 @@
-.App {
-  text-align: center;
+.body {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 30% auto;
+    grid-template-rows: auto;
+    grid-template-areas: "sidebar calendar";
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.sidebar {
+    grid-area: "sidebar";
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.sidebar {
+    grid-area: "calendar";
+}
+
+.hidden {
+    display: none;
+}
+
+.year {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  
+  .month {
+    margin: 5px 5px 15px 5px;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .month-name {
+    color: #ccbe88;
+    font-weight: bold;
   }
-}
+  
+  .day {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+  }
+  
+  .date {
+    width: 30px;
+    height: 30px;
+    background: white;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+  }
+  
+  .date.in-month:hover {
+    cursor: pointer;
+    background: #ccbe88;
+  }
+  
+  .today {
+    background: #ccbe88;
+  }
+  
+  .date.prev-month,
+  .date.next-month {
+    color: grey;
+  }
+  
