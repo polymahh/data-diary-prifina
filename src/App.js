@@ -13,6 +13,12 @@ import {
   getGooglePlacesWeekWeekData,
   getGoogleRoutesWeekWeekData,
 } from "./googleZoom.js"
+import {
+  getWhoopWorkoutWeekData,
+  getWhoopSleepWeekData,
+  getWhoopRecoveryWeekData,
+  getWhoopCycleWeekData
+} from "./whoopZoom"
 import { useState,useCallback, useEffect } from "react";
 import Year from "./Year";
 import React, { Fragment, useMemo } from 'react'
@@ -493,95 +499,145 @@ const varToString = (attr) => {
 var myEventsList = []
 for (var i =0; i< events.length;i++){
   switch(events[i].prifinaSourceType){
-      case "Oura":
-        switch(events[i].prifinaSourceEventType){
-          case "Readiness":
-            myEventsList.push({
-              title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].summary_date}`,
-              allDay: true,
-              // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
-              // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-              start: new Date(events[i].summary_date),
-              end: new Date(events[i].summary_date),
-              data: events[i],
-            })
-            break
-          case "SleepSummary":
-            myEventsList.push({
-              title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].summary_date}`,
-              allDay: false,
-              // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
-              // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-              start: new Date(events[i].bedtime_start),
-              end: new Date(events[i].bedtime_end),
-              data: events[i],
-            })
-            break
-          case "Activity":
-            myEventsList.push({
-              title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].summary_date}`,
-              Day: true,
-              // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
-              // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-              start: new Date(events[i].summary_date),
-              end: new Date(events[i].summary_date),
-              data: events[i],
-            })
-            break
-          default:
-            break
-        }
-        break
-      case "Google":
-        switch(events[i].prifinaSourceEventType){
-          case "Route":
-            myEventsList.push({
-              title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].startTimestamp.split("T")[0]}`,
-              allDay: false,
-              // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
-              // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-              start: new Date(events[i].startTimestamp),
-              end: new Date(events[i].endTimestamp),
-              data: events[i],
-            })
-            break
-          case "Place":
-            myEventsList.push({
-              title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].startTimestamp.split("T")[0]}`,
-              allDay: false,
-              // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
-              // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-              start: new Date(events[i].startTimestamp),
-              end: new Date(events[i].endTimestamp),
-              data: events[i],
-            })
-            break
-          case "Activity":
-            myEventsList.push({
-              title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].p_datetime}`,
-              allDay: false,
-              // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
-              // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-              start: new Date(events[i].p_datetime),
-              end: new Date((new Date(events[i].p_datetime)).getTime()+1),
-              data: events[i],
-            })
-            break
-          case "Location":
-            myEventsList.push({
-              title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].p_datetime}`,
-              allDay: false,
-              // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
-              // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-              start: new Date(events[i].p_datetime),
-              end: new Date((new Date(events[i].p_datetime)).getTime()+1),
-              data: events[i],
-            })
-            break
-          default:
-            break
-        }
-        break
+    case "Oura":
+      switch(events[i].prifinaSourceEventType){
+        case "Readiness":
+          myEventsList.push({
+            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].summary_date}`,
+            allDay: true,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(events[i].summary_date),
+            end: new Date(events[i].summary_date),
+            data: events[i],
+          })
+          break
+        case "SleepSummary":
+          myEventsList.push({
+            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].summary_date}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(events[i].bedtime_start),
+            end: new Date(events[i].bedtime_end),
+            data: events[i],
+          })
+          break
+        case "Activity":
+          myEventsList.push({
+            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].summary_date}`,
+            Day: true,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(events[i].summary_date),
+            end: new Date(events[i].summary_date),
+            data: events[i],
+          })
+          break
+        default:
+          break
+      }
+      break
+    case "Google":
+      switch(events[i].prifinaSourceEventType){
+        case "Route":
+          myEventsList.push({
+            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].startTimestamp.split("T")[0]}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(events[i].startTimestamp),
+            end: new Date(events[i].endTimestamp),
+            data: events[i],
+          })
+          break
+        case "Place":
+          myEventsList.push({
+            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].startTimestamp.split("T")[0]}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(events[i].startTimestamp),
+            end: new Date(events[i].endTimestamp),
+            data: events[i],
+          })
+          break
+        case "Activity":
+          myEventsList.push({
+            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].p_datetime}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(events[i].p_datetime),
+            end: new Date((new Date(events[i].p_datetime)).getTime()+1),
+            data: events[i],
+          })
+          break
+        case "Location":
+          myEventsList.push({
+            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].p_datetime}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(events[i].p_datetime),
+            end: new Date((new Date(events[i].p_datetime)).getTime()+1),
+            data: events[i],
+          })
+          break
+        default:
+          break
+      }
+      break
+    case "Whoop":
+      switch(events[i].prifinaSourceEventType){
+        case "Cycle":
+          myEventsList.push({
+            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].created_at}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(events[i].start),
+            end: new Date(events[i].end),
+            data: events[i],
+          })
+          break
+        case "Recovery":
+          myEventsList.push({
+            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].created_at}`,
+            allDay: true,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(events[i].created_at),
+            end: new Date(events[i].created_at),
+            data: events[i],
+          })
+          break
+        case "Sleep":
+          myEventsList.push({
+            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].updated_at}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(events[i].start),
+            end: new Date(events[i].end),
+            data: events[i],
+          })
+          break
+        case "Workout":
+          myEventsList.push({
+            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].updated_at}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(events[i].start),
+            end: new Date(events[i].end),
+            data: events[i],
+          })
+          break
+        default:
+          break
+      }
+      break  
     default:
       break
   }
@@ -744,6 +800,52 @@ const getZoomData = () => {
             }
           })
           break
+        case "Whoop":
+          value.forEach((type)=>{
+            finalData[key][type] = {}
+            typesShown[key][type] = false
+            switch(type){
+              case "Cycle":
+                finalData[key][type] = getWhoopCycleWeekData("CycleWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Recovery":
+                finalData[key][type] = getWhoopRecoveryWeekData("RecoveryWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Sleep":
+                finalData[key][type] = getWhoopSleepWeekData("SleepWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Workout":
+                finalData[key][type] = getWhoopWorkoutWeekData("WorkoutWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              default:
+                break
+            }
+          })
+          break    
         default:
           break
       }
@@ -874,6 +976,52 @@ const getZoomData = () => {
             }
           })
           break
+        case "Whoop":
+          value.forEach((type)=>{
+            finalData[key][type] = {}
+            typesShown[key][type] = false
+            switch(type){
+              case "Cycle":
+                finalData[key][type] = getWhoopCycleWeekData("CycleWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Recovery":
+                finalData[key][type] = getWhoopRecoveryWeekData("RecoveryWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Sleep":
+                finalData[key][type] = getWhoopSleepWeekData("SleepWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Workout":
+                finalData[key][type] = getWhoopWorkoutWeekData("WorkoutWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              default:
+                break
+            }
+          })
+          break    
         default:
           break
       }
@@ -996,6 +1144,52 @@ const getZoomData = () => {
             }
           })
           break
+        case "Whoop":
+          value.forEach((type)=>{
+            finalData[key][type] = {}
+            typesShown[key][type] = false
+            switch(type){
+              case "Cycle":
+                finalData[key][type] = getWhoopCycleWeekData("CycleWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Recovery":
+                finalData[key][type] = getWhoopRecoveryWeekData("RecoveryWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Sleep":
+                finalData[key][type] = getWhoopSleepWeekData("SleepWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Workout":
+                finalData[key][type] = getWhoopWorkoutWeekData("WorkoutWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              default:
+                break
+            }
+          })
+          break        
         default:
           break
       }
@@ -1158,6 +1352,85 @@ const dataView = (source, type, aggregateData) => {
               break
           }
           break    
+        case "Whoop":
+          switch(type){
+            case "Cycle":
+              return (
+                <>
+                  <p>Time Bound of Cycle:</p>
+                  <p>{millisecondsDisplay(aggregateData.timeSpent.max)}|{millisecondsDisplay(aggregateData.timeSpent.avg)}|{millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                  <p>Strain:</p>
+                  <p>{aggregateData.strain.max}|{aggregateData.strain.avg}|{aggregateData.strain.min}</p>
+                  <p>Kilojoule:</p>
+                  <p>{aggregateData.kilojoule.max}|{aggregateData.kilojoule.avg}|{aggregateData.kilojoule.min}</p>
+                  <p>Average Heart Rate:</p>
+                  <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p>
+                </>
+              )
+            case "Recovery":
+              return (
+                <>
+                  <p>Recovery Score:</p>
+                  <p>{aggregateData.recovery_score.max}|{aggregateData.recovery_score.avg}|{aggregateData.recovery_score.min}</p>
+                  <p>Resting Heart Rate:</p>
+                  <p>{aggregateData.resting_heart_rate.max}|{aggregateData.resting_heart_rate.avg}|{aggregateData.resting_heart_rate.min}</p>
+                  <p>RMSSD:</p>
+                  <p>{aggregateData.hrv_rmssd_milli.max}|{aggregateData.hrv_rmssd_milli.avg}|{aggregateData.hrv_rmssd_milli.min}</p>
+                  <p>SpO2:</p>
+                  <p>{aggregateData.spo2_percentage.max}|{aggregateData.spo2_percentage.avg}|{aggregateData.spo2_percentage.min}</p>
+                  <p>Skin Temp:</p>
+                  <p>{aggregateData.skin_temp_celsius.max}|{aggregateData.skin_temp_celsius.avg}|{aggregateData.skin_temp_celsius.min}</p>
+                </>
+              )
+            case "Sleep":
+              return (
+                <>
+                  <p>Time Spent Sleeping:</p>
+                  <p>{millisecondsDisplay(aggregateData.timeSpent.max)}|{millisecondsDisplay(aggregateData.timeSpent.avg)}|{millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                  <p>Respiratory Rate:</p>
+                  <p>{aggregateData.respiratory_rate.max}|{aggregateData.respiratory_rate.avg}|{aggregateData.respiratory_rate.min}</p>
+                  <p>Sleep Performance:</p>
+                  <p>{aggregateData.sleep_performance_percentage.max}|{aggregateData.sleep_performance_percentage.avg}|{aggregateData.sleep_performance_percentage.min}</p>
+                  <p>Sleep Consistency:</p>
+                  <p>{aggregateData.sleep_consistency_percentage.max}|{aggregateData.sleep_consistency_percentage.avg}|{aggregateData.sleep_consistency_percentage.min}</p>
+                  <p>Sleep Efficiency:</p>
+                  <p>{aggregateData.sleep_efficiency_percentage.max}|{aggregateData.sleep_efficiency_percentage.avg}|{aggregateData.sleep_efficiency_percentage.min}</p>
+                  <p>Disturbance Count: {aggregateData.disturbance_count}</p>
+                </>
+              )
+            case "Workout":
+              return (
+                <>
+                  <p>Time Spent Working Out:</p>
+                  <p>{millisecondsDisplay(aggregateData.timeSpent.max)}|{millisecondsDisplay(aggregateData.timeSpent.avg)}|{millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                  <p>Strain:</p>
+                  <p>{aggregateData.strain.max}|{aggregateData.strain.avg}|{aggregateData.strain.min}</p>
+                  <p>Average Heart Rate:</p>
+                  <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p>
+                  <p>Max Heart Rate:</p>
+                  <p>{aggregateData.max_heart_rate.max}|{aggregateData.max_heart_rate.avg}|{aggregateData.max_heart_rate.min}</p>
+                  <p>Kilojoule:</p>
+                  <p>{aggregateData.kilojoule.max}|{aggregateData.kilojoule.avg}|{aggregateData.kilojoule.min}</p>
+                  <p>Distance Travelled:</p>
+                  <p>{aggregateData.distance_meter.max}|{aggregateData.distance_meter.avg}|{aggregateData.distance_meter.min}</p>
+                  <p>Altitude Gain:</p>
+                  <p>{aggregateData.altitude_gain_meter.max}|{aggregateData.altitude_gain_meter.avg}|{aggregateData.altitude_gain_meter.min}</p>
+                  <p>Altitude Change:</p>
+                  <p>{aggregateData.altitude_change_meter.max}|{aggregateData.altitude_change_meter.avg}|{aggregateData.altitude_change_meter.min}</p>
+                  <p>Zone Duration:</p>
+                  <p>{aggregateData.zone_duration.zone_zero_milli.val}({aggregateData.zone_duration.zone_zero_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_one_milli.val}({aggregateData.zone_duration.zone_one_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_two_milli.val}({aggregateData.zone_duration.zone_two_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_three_milli.val}({aggregateData.zone_duration.zone_three_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_four_milli.val}({aggregateData.zone_duration.zone_four_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_five_milli.val}({aggregateData.zone_duration.zone_five_milli.percent}%)|<br/>
+                  </p>
+                </>
+              )
+            default:
+              break
+          }
+          break    
         default:
           break
       }
@@ -1267,6 +1540,85 @@ const dataView = (source, type, aggregateData) => {
               break
           }
           break
+        case "Whoop":
+          switch(type){
+            case "Cycle":
+              return (
+                <>
+                  <p>Time Bound of Cycle:</p>
+                  <p>{millisecondsDisplay(aggregateData.timeSpent.max)}|{millisecondsDisplay(aggregateData.timeSpent.avg)}|{millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                  <p>Strain:</p>
+                  <p>{aggregateData.strain.max}|{aggregateData.strain.avg}|{aggregateData.strain.min}</p>
+                  <p>Kilojoule:</p>
+                  <p>{aggregateData.kilojoule.max}|{aggregateData.kilojoule.avg}|{aggregateData.kilojoule.min}</p>
+                  <p>Average Heart Rate:</p>
+                  <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p>
+                </>
+              )
+            case "Recovery":
+              return (
+                <>
+                  <p>Recovery Score:</p>
+                  <p>{aggregateData.recovery_score.max}|{aggregateData.recovery_score.avg}|{aggregateData.recovery_score.min}</p>
+                  <p>Resting Heart Rate:</p>
+                  <p>{aggregateData.resting_heart_rate.max}|{aggregateData.resting_heart_rate.avg}|{aggregateData.resting_heart_rate.min}</p>
+                  <p>RMSSD:</p>
+                  <p>{aggregateData.hrv_rmssd_milli.max}|{aggregateData.hrv_rmssd_milli.avg}|{aggregateData.hrv_rmssd_milli.min}</p>
+                  <p>SpO2:</p>
+                  <p>{aggregateData.spo2_percentage.max}|{aggregateData.spo2_percentage.avg}|{aggregateData.spo2_percentage.min}</p>
+                  <p>Skin Temp:</p>
+                  <p>{aggregateData.skin_temp_celsius.max}|{aggregateData.skin_temp_celsius.avg}|{aggregateData.skin_temp_celsius.min}</p>
+                </>
+              )
+            case "Sleep":
+              return (
+                <>
+                  <p>Time Spent Sleeping:</p>
+                  <p>{millisecondsDisplay(aggregateData.timeSpent.max)}|{millisecondsDisplay(aggregateData.timeSpent.avg)}|{millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                  <p>Respiratory Rate:</p>
+                  <p>{aggregateData.respiratory_rate.max}|{aggregateData.respiratory_rate.avg}|{aggregateData.respiratory_rate.min}</p>
+                  <p>Sleep Performance:</p>
+                  <p>{aggregateData.sleep_performance_percentage.max}|{aggregateData.sleep_performance_percentage.avg}|{aggregateData.sleep_performance_percentage.min}</p>
+                  <p>Sleep Consistency:</p>
+                  <p>{aggregateData.sleep_consistency_percentage.max}|{aggregateData.sleep_consistency_percentage.avg}|{aggregateData.sleep_consistency_percentage.min}</p>
+                  <p>Sleep Efficiency:</p>
+                  <p>{aggregateData.sleep_efficiency_percentage.max}|{aggregateData.sleep_efficiency_percentage.avg}|{aggregateData.sleep_efficiency_percentage.min}</p>
+                  <p>Disturbance Count: {aggregateData.disturbance_count}</p>
+                </>
+              )
+            case "Workout":
+              return (
+                <>
+                  <p>Time Spent Working Out:</p>
+                  <p>{millisecondsDisplay(aggregateData.timeSpent.max)}|{millisecondsDisplay(aggregateData.timeSpent.avg)}|{millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                  <p>Strain:</p>
+                  <p>{aggregateData.strain.max}|{aggregateData.strain.avg}|{aggregateData.strain.min}</p>
+                  <p>Average Heart Rate:</p>
+                  <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p>
+                  <p>Max Heart Rate:</p>
+                  <p>{aggregateData.max_heart_rate.max}|{aggregateData.max_heart_rate.avg}|{aggregateData.max_heart_rate.min}</p>
+                  <p>Kilojoule:</p>
+                  <p>{aggregateData.kilojoule.max}|{aggregateData.kilojoule.avg}|{aggregateData.kilojoule.min}</p>
+                  <p>Distance Travelled:</p>
+                  <p>{aggregateData.distance_meter.max}|{aggregateData.distance_meter.avg}|{aggregateData.distance_meter.min}</p>
+                  <p>Altitude Gain:</p>
+                  <p>{aggregateData.altitude_gain_meter.max}|{aggregateData.altitude_gain_meter.avg}|{aggregateData.altitude_gain_meter.min}</p>
+                  <p>Altitude Change:</p>
+                  <p>{aggregateData.altitude_change_meter.max}|{aggregateData.altitude_change_meter.avg}|{aggregateData.altitude_change_meter.min}</p>
+                  <p>Zone Duration:</p>
+                  <p>{aggregateData.zone_duration.zone_zero_milli.val}({aggregateData.zone_duration.zone_zero_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_one_milli.val}({aggregateData.zone_duration.zone_one_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_two_milli.val}({aggregateData.zone_duration.zone_two_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_three_milli.val}({aggregateData.zone_duration.zone_three_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_four_milli.val}({aggregateData.zone_duration.zone_four_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_five_milli.val}({aggregateData.zone_duration.zone_five_milli.percent}%)|<br/>
+                  </p>
+                </>
+              )
+            default:
+              break
+          }
+          break  
         default:
           break
       }
@@ -1376,6 +1728,85 @@ const dataView = (source, type, aggregateData) => {
             break
         }
         break
+        case "Whoop":
+          switch(type){
+            case "Cycle":
+              return (
+                <>
+                  <p>Time Bound of Cycle:</p>
+                  <p>{millisecondsDisplay(aggregateData.timeSpent.max)}|{millisecondsDisplay(aggregateData.timeSpent.avg)}|{millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                  <p>Strain:</p>
+                  <p>{aggregateData.strain.max}|{aggregateData.strain.avg}|{aggregateData.strain.min}</p>
+                  <p>Kilojoule:</p>
+                  <p>{aggregateData.kilojoule.max}|{aggregateData.kilojoule.avg}|{aggregateData.kilojoule.min}</p>
+                  <p>Average Heart Rate:</p>
+                  <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p>
+                </>
+              )
+            case "Recovery":
+              return (
+                <>
+                  <p>Recovery Score:</p>
+                  <p>{aggregateData.recovery_score.max}|{aggregateData.recovery_score.avg}|{aggregateData.recovery_score.min}</p>
+                  <p>Resting Heart Rate:</p>
+                  <p>{aggregateData.resting_heart_rate.max}|{aggregateData.resting_heart_rate.avg}|{aggregateData.resting_heart_rate.min}</p>
+                  <p>RMSSD:</p>
+                  <p>{aggregateData.hrv_rmssd_milli.max}|{aggregateData.hrv_rmssd_milli.avg}|{aggregateData.hrv_rmssd_milli.min}</p>
+                  <p>SpO2:</p>
+                  <p>{aggregateData.spo2_percentage.max}|{aggregateData.spo2_percentage.avg}|{aggregateData.spo2_percentage.min}</p>
+                  <p>Skin Temp:</p>
+                  <p>{aggregateData.skin_temp_celsius.max}|{aggregateData.skin_temp_celsius.avg}|{aggregateData.skin_temp_celsius.min}</p>
+                </>
+              )
+            case "Sleep":
+              return (
+                <>
+                  <p>Time Spent Sleeping:</p>
+                  <p>{millisecondsDisplay(aggregateData.timeSpent.max)}|{millisecondsDisplay(aggregateData.timeSpent.avg)}|{millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                  <p>Respiratory Rate:</p>
+                  <p>{aggregateData.respiratory_rate.max}|{aggregateData.respiratory_rate.avg}|{aggregateData.respiratory_rate.min}</p>
+                  <p>Sleep Performance:</p>
+                  <p>{aggregateData.sleep_performance_percentage.max}|{aggregateData.sleep_performance_percentage.avg}|{aggregateData.sleep_performance_percentage.min}</p>
+                  <p>Sleep Consistency:</p>
+                  <p>{aggregateData.sleep_consistency_percentage.max}|{aggregateData.sleep_consistency_percentage.avg}|{aggregateData.sleep_consistency_percentage.min}</p>
+                  <p>Sleep Efficiency:</p>
+                  <p>{aggregateData.sleep_efficiency_percentage.max}|{aggregateData.sleep_efficiency_percentage.avg}|{aggregateData.sleep_efficiency_percentage.min}</p>
+                  <p>Disturbance Count: {aggregateData.disturbance_count}</p>
+                </>
+              )
+            case "Workout":
+              return (
+                <>
+                  <p>Time Spent Working Out:</p>
+                  <p>{millisecondsDisplay(aggregateData.timeSpent.max)}|{millisecondsDisplay(aggregateData.timeSpent.avg)}|{millisecondsDisplay(aggregateData.timeSpent.min)}</p>
+                  <p>Strain:</p>
+                  <p>{aggregateData.strain.max}|{aggregateData.strain.avg}|{aggregateData.strain.min}</p>
+                  <p>Average Heart Rate:</p>
+                  <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p>
+                  <p>Max Heart Rate:</p>
+                  <p>{aggregateData.max_heart_rate.max}|{aggregateData.max_heart_rate.avg}|{aggregateData.max_heart_rate.min}</p>
+                  <p>Kilojoule:</p>
+                  <p>{aggregateData.kilojoule.max}|{aggregateData.kilojoule.avg}|{aggregateData.kilojoule.min}</p>
+                  <p>Distance Travelled:</p>
+                  <p>{aggregateData.distance_meter.max}|{aggregateData.distance_meter.avg}|{aggregateData.distance_meter.min}</p>
+                  <p>Altitude Gain:</p>
+                  <p>{aggregateData.altitude_gain_meter.max}|{aggregateData.altitude_gain_meter.avg}|{aggregateData.altitude_gain_meter.min}</p>
+                  <p>Altitude Change:</p>
+                  <p>{aggregateData.altitude_change_meter.max}|{aggregateData.altitude_change_meter.avg}|{aggregateData.altitude_change_meter.min}</p>
+                  <p>Zone Duration:</p>
+                  <p>{aggregateData.zone_duration.zone_zero_milli.val}({aggregateData.zone_duration.zone_zero_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_one_milli.val}({aggregateData.zone_duration.zone_one_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_two_milli.val}({aggregateData.zone_duration.zone_two_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_three_milli.val}({aggregateData.zone_duration.zone_three_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_four_milli.val}({aggregateData.zone_duration.zone_four_milli.percent}%)|<br/>
+                  {aggregateData.zone_duration.zone_five_milli.val}({aggregateData.zone_duration.zone_five_milli.percent}%)|<br/>
+                  </p>
+                </>
+              )
+            default:
+              break
+          }
+          break  
         default:
           break
       }
@@ -1394,6 +1825,19 @@ const lengthCalc = (source) => {
   return num
 }
 
+const exapndAll = (bool) => {
+  var newSourcesShown = {}
+  var newTypesShown = {}
+  Object.entries(zoomData).map(([source, value])=>{
+    newSourcesShown[source] = bool
+    newTypesShown[source] = {}
+    Object.entries(zoomData[source]).map(([type, value])=>{
+      newTypesShown[source][type] = bool
+    })
+  })
+  setSourcesShown(newSourcesShown)
+  setTypesShown(newTypesShown)
+}
 
 // const myEventsList = [
 //   {
@@ -1411,6 +1855,8 @@ const lengthCalc = (source) => {
     <div className="sidebar">
       <h1> Aggregate data</h1>
       <div id="1">
+      <button onClick={()=>{exapndAll(true)}}>Expand All</button>
+      <button onClick={()=>{exapndAll(false)}}>Collapse All</button>
         {/* {zoomData} */}
       {view === "month"? (
         <>
@@ -1437,6 +1883,7 @@ const lengthCalc = (source) => {
                       {
                           Object.entries(zoomData[source]).map(([type, value])=>(
                             <>
+                            <div style={{marginLeft:"5%"}}>
                             <p><button onClick={() => {
                               setTypesShown({
                                 ...typesShown,
@@ -1461,6 +1908,7 @@ const lengthCalc = (source) => {
                                 </>
                               ) 
                             }
+                            </div>
                             </>
                           ))
                         }
@@ -1504,6 +1952,7 @@ const lengthCalc = (source) => {
                       {
                           Object.entries(zoomData[source]).map(([type, value])=>(
                             <>
+                            <div style={{marginLeft:"5%"}}>
                             <p><button onClick={() => {
                               setTypesShown({
                                 ...typesShown,
@@ -1528,6 +1977,7 @@ const lengthCalc = (source) => {
                                 </>
                               ) 
                             }
+                            </div>
                             </>
                           ))
                         }
@@ -1572,6 +2022,7 @@ const lengthCalc = (source) => {
                       {
                           Object.entries(zoomData[source]).map(([type, value])=>(
                             <>
+                            <div style={{marginLeft:"5%"}}>
                             <p><button onClick={() => {
                               setTypesShown({
                                 ...typesShown,
@@ -1596,6 +2047,7 @@ const lengthCalc = (source) => {
                                 </>
                               ) 
                             }
+                            </div>
                             </>
                           ))
                         }

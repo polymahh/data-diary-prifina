@@ -276,7 +276,7 @@ const dataModels = {
     },
 };
 
-export function getGoogleWorkoutWeekData(dataModel, data) {
+export function getWhoopCycleWeekData(dataModel, data) {
     console.log(data)
     let zoomData = data;
     const zoomModel = dataModels[dataModel].mockup;
@@ -289,23 +289,292 @@ export function getGoogleWorkoutWeekData(dataModel, data) {
         case "aggregate":
             overviewData[rootKey] = {};
             [
-            "types",
-            "confidence"
+            "timeSpent",
+            "strain",
+            "kilojoule",
+            "average_heart_rate"
             ].forEach((aggregateKey)=>{
             switch(aggregateKey){
-                case "types":
-                    let types = []
+                case "timeSpent":
+                    var dates = []
                     for (var i = 0; i<zoomData.length; i++){
-                        types.push(zoomData[i].p_type)
+                        dates.push({
+                            "start": zoomData[i]["start"],
+                            "end": zoomData[i]["end"]
+                        })
                     }
-                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](types);
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](dates);
                     break
-                case "confidence":
-                    let confidences = []
+                case "strain":
+                    var strains = []
                     for (var i = 0; i<zoomData.length; i++){
-                        confidences.push(zoomData[i].p_confidence)
+                        strains.push(zoomData[i].score.strain)
                     }
-                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](confidences);
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](strains);
+                    break
+                case "kilojoule":
+                    var kilojoules = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        kilojoules.push(zoomData[i].score.kilojoule)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](kilojoules);
+                    break
+                case "average_heart_rate":
+                    var average_heart_rates = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        average_heart_rates.push(zoomData[i].score.average_heart_rate)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](average_heart_rates);
+                    break
+                default:
+                    break
+            }
+            })
+            break
+        default:
+            break;
+        }
+    })
+    overviewData["length"] = data.length
+    return overviewData
+}
+
+export function getWhoopRecoveryWeekData(dataModel, data) {
+    console.log(data)
+    let zoomData = data;
+    const zoomModel = dataModels[dataModel].mockup;
+    
+    let overviewData = {};
+    [
+        "aggregate"
+    ].forEach((rootKey)=>{
+        switch(rootKey){
+        case "aggregate":
+            overviewData[rootKey] = {};
+            [
+            "recovery_score",
+            "resting_heart_rate",
+            "hrv_rmssd_milli",
+            "spo2_percentage",
+            "skin_temp_celsius"
+            ].forEach((aggregateKey)=>{
+            switch(aggregateKey){
+                case "recovery_score":
+                    var recovery_scores = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        recovery_scores.push(zoomData[i].score.recovery_score)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](recovery_scores);
+                    break
+                case "resting_heart_rate":
+                    var resting_heart_rates = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        resting_heart_rates.push(zoomData[i].score.resting_heart_rate)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](resting_heart_rates);
+                    break
+                case "hrv_rmssd_milli":
+                    var hrv_rmssd_millis = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        hrv_rmssd_millis.push(zoomData[i].score.hrv_rmssd_milli)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](hrv_rmssd_millis);
+                    break
+                case "spo2_percentage":
+                    var spo2_percentages = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        spo2_percentages.push(zoomData[i].score.spo2_percentage)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](spo2_percentages);
+                    break
+                case "skin_temp_celsius":
+                    var skin_temp_celsiuses = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        skin_temp_celsiuses.push(zoomData[i].score.skin_temp_celsius)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](skin_temp_celsiuses);
+                    break
+                default:
+                    break
+            }
+            })
+            break
+        default:
+            break;
+        }
+    })
+    overviewData["length"] = data.length
+    return overviewData
+}
+
+export function getWhoopSleepWeekData(dataModel, data) {
+    console.log(data)
+    let zoomData = data;
+    const zoomModel = dataModels[dataModel].mockup;
+    
+    let overviewData = {};
+    [
+        "aggregate"
+    ].forEach((rootKey)=>{
+        switch(rootKey){
+        case "aggregate":
+            overviewData[rootKey] = {};
+            [
+            "timeSpent",
+            "respiratory_rate",
+            "sleep_performance_percentage",
+            "sleep_consistency_percentage",
+            "sleep_efficiency_percentage",
+            "disturbance_count"
+            ].forEach((aggregateKey)=>{
+            switch(aggregateKey){
+                case "timeSpent":
+                    var dates = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        dates.push({
+                            "start": zoomData[i]["start"],
+                            "end": zoomData[i]["end"]
+                        })
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](dates);
+                    break
+                case "respiratory_rate":
+                    var respiratory_rates = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        respiratory_rates.push(zoomData[i].score.respiratory_rate)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](respiratory_rates);
+                    break
+                case "sleep_performance_percentage":
+                    var sleep_performance_percentages = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        sleep_performance_percentages.push(zoomData[i].score.sleep_performance_percentage)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](sleep_performance_percentages);
+                    break
+                case "sleep_consistency_percentage":
+                    var sleep_consistency_percentages = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        sleep_consistency_percentages.push(zoomData[i].score.sleep_consistency_percentage)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](sleep_consistency_percentages);
+                    break
+                case "sleep_efficiency_percentage":
+                    var sleep_efficiency_percentages = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        sleep_efficiency_percentages.push(zoomData[i].score.sleep_efficiency_percentage)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](sleep_efficiency_percentages);
+                    break
+                case "disturbance_count":
+                    var disturbance_counts = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        disturbance_counts.push(zoomData[i].score.stage_summary.disturbance_count)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](disturbance_counts);
+                    break
+                default:
+                    break
+            }
+            })
+            break
+        default:
+            break;
+        }
+    })
+    overviewData["length"] = data.length
+    return overviewData
+}
+
+export function getWhoopWorkoutWeekData(dataModel, data) {
+    console.log(data)
+    let zoomData = data;
+    const zoomModel = dataModels[dataModel].mockup;
+    
+    let overviewData = {};
+    [
+        "aggregate"
+    ].forEach((rootKey)=>{
+        switch(rootKey){
+        case "aggregate":
+            overviewData[rootKey] = {};
+            [
+            "timeSpent",
+            "strain",
+            "average_heart_rate",
+            "max_heart_rate",
+            "kilojoule",
+            "distance_meter",
+            "altitude_gain_meter",
+            "altitude_change_meter",
+            "zone_duration"
+            ].forEach((aggregateKey)=>{
+            switch(aggregateKey){
+                case "timeSpent":
+                    var dates = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        dates.push({
+                            "start": zoomData[i]["start"],
+                            "end": zoomData[i]["end"]
+                        })
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](dates);
+                    break
+                case "strain":
+                    var strains = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        strains.push(zoomData[i].score.strain)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](strains);
+                    break
+                case "average_heart_rate":
+                    var average_heart_rates = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        average_heart_rates.push(zoomData[i].score.average_heart_rate)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](average_heart_rates);
+                    break
+                case "max_heart_rate":
+                    var max_heart_rates = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        max_heart_rates.push(zoomData[i].score.max_heart_rate)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](max_heart_rates);
+                    break
+                case "kilojoule":
+                    var kilojoules = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        kilojoules.push(zoomData[i].score.kilojoule)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](kilojoules);
+                    break
+                case "distance_meter":
+                    var distance_meters = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        distance_meters.push(zoomData[i].score.distance_meter)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](distance_meters);
+                    break
+                case "altitude_gain_meter":
+                    var altitude_gain_meters = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        altitude_gain_meters.push(zoomData[i].score.altitude_gain_meter)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](altitude_gain_meters);
+                    break
+                case "altitude_change_meter":
+                    var altitude_change_meters = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        altitude_change_meters.push(zoomData[i].score.altitude_change_meter)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](altitude_change_meters);
+                    break
+                case "zone_duration":
+                    var zone_durations = []
+                    for (var i = 0; i<zoomData.length; i++){
+                        zone_durations.push(zoomData[i].score.zone_duration)
+                    }
+                    overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](zone_durations);
                     break
                 default:
                     break
