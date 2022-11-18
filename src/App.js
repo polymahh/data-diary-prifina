@@ -649,6 +649,7 @@ function App() {
   const { views } = useMemo(
     () => ({
       views: {
+        day:true,
         week: true,
         month: true,
         year: Year
@@ -656,23 +657,50 @@ function App() {
     }),
     []
   )
-  const [range, setRange] = useState([])
-  const [view, setView] = useState(Views.WEEK)
+
+  const finalDay = () => {
+    var date = new Date()
+    date.setMonth(date.getMonth() + 1)
+    date.setDate(0)
+    return date.getDate()
+
+  }
+  const [range, setRange] = useState({
+    start: new Date(`${new Date().getFullYear()}-${(new Date()).getMonth()+1}-01`),
+    end: new Date(`${new Date().getFullYear()}-${(new Date()).getMonth()+1}-${finalDay()}`)
+  })
+  const [test, setTest] = useState(null)
+  const [view, setView] = useState("month")
   const [zoomData, setZoomData] = useState(0)
   const [sourcesShown, setSourcesShown] = useState({})
   const [typesShown, setTypesShown] = useState({})
+  const [date, setDate] = useState(new Date())
 
 
 const onView = useCallback((newView) => {
   console.log(newView)
   setView(newView)}, [setView])
 const onRangeChange = useCallback((newRange) => {
-  console.log(newRange)
+  console.log("newRange",newRange)
   setRange(newRange)}, [setRange])
 const onSelectEvent = useCallback((event) => {
   // console.log(event)
   window.alert(JSON.stringify(event.data))}, [])
-
+const getNow = () => {
+  console.log("value",1)
+  return (
+    <>
+    </>
+  )
+}
+const onDrillDown = useCallback(
+  (newDate) => {
+    setDate(new Date(newDate))
+    setView("day")
+  },
+  [setView]
+)
+const onNavigate = useCallback((newDate) => setDate(newDate), [setDate])
 // const ReadinessZoom = getReadinessSummaryWeekData("ReadinessWeek",7)
 // console.log("ReadinessZoom", ReadinessZoom)
 // console.log()
@@ -683,7 +711,8 @@ const getZoomData = () => {
   var sourceData = {}
   var typesShown = {}
   var filteredData
-
+  console.log("getZoomData")
+  console.log("RANGE", range)
   if (view === "week"){
     filteredData = myEventsList.filter((event)=>{
       // console.log("",event)
@@ -1244,6 +1273,12 @@ useEffect(() => {
   getZoomData()
   // console.log(zoomData)
 }, [range]);
+
+// useEffect(() => {
+//   //Runs only on the first render
+//   getZoomData()
+//   // console.log(zoomData)
+// }, [test]);
 
 const dataView = (source, type, aggregateData) => {
   switch(view){
@@ -2074,13 +2109,16 @@ const exapndAll = (bool) => {
       startAccessor="start"
       endAccessor="end"
       onView={onView}
+      view={view}
       onRangeChange={onRangeChange}
       style={{height: 500, margin:"50px" }}
       onSelectEvent={onSelectEvent}
       toolbar={true}
       views={views}
       messages={{ year: "Year" }}
-      defaultView={"month"}
+      onDrillDown={onDrillDown}
+      date={date}
+      onNavigate={onNavigate}
     />
     </div>
     </>

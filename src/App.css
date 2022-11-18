@@ -52,11 +52,21 @@
   
   .date.in-month:hover {
     cursor: pointer;
-    background: #ccbe88;
+    background: #4f4f4f;
   }
   
   .today {
     background: #ccbe88;
+  }
+
+  .event-date-low {
+    background: #8acc88;
+  }
+  .event-date-medium {
+    background: #88c3cc;
+  }
+  .event-date-high {
+    background: #ff756e;
   }
   
   .date.prev-month,

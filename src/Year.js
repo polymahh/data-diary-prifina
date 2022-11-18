@@ -30,12 +30,26 @@ function createCalendar(currentDate) {
       week.push(date)
     }
   }
-
   return calendar
 }
 
 function CalendarDate(props) {
   const { dateToRender, dateOfMonth } = props
+  const checkIfHasEvents = () => {
+    switch(props.events.length){
+      case 0:
+        return ""
+      case 1:
+      case 2:
+        return "event-date-low"
+      case 3:
+      case 4:
+      case 5:
+        return "event-date-medium"
+      default:
+        return "event-date-high"
+    }
+  }
   const today =
     dateToRender.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD')
       ? 'today'
@@ -43,7 +57,7 @@ function CalendarDate(props) {
 
   if (dateToRender.month() < dateOfMonth.month()) {
     return (
-      <button disabled={true} className="date prev-month">
+      <button disabled={true} className={`date prev-month ${checkIfHasEvents()}`}>
         {dateToRender.date()}
       </button>
     )
@@ -51,15 +65,16 @@ function CalendarDate(props) {
 
   if (dateToRender.month() > dateOfMonth.month()) {
     return (
-      <button disabled={true} className="date next-month">
+      <button disabled={true} className={`date next-month ${checkIfHasEvents()}`}>
         {dateToRender.date()}
       </button>
     )
   }
+  
 
   return (
     <button
-      className={`date in-month ${today}`}
+      className={`date in-month ${today} ${checkIfHasEvents()}`}
       onClick={() => props.onClick(dateToRender)}>
       {dateToRender.date()}
     </button>
@@ -98,15 +113,28 @@ class Calendar extends React.Component {
         ))}
         {this.state.calendar.map((week, index) => (
           <div key={index}>
+            {/* {console.log("week",week)} */}
             {week.map(date => (
+              <>
+              {/* {console.log("date",date.toDate())} */}
               <CalendarDate
                 key={date.date()}
                 dateToRender={date}
                 dateOfMonth={this.state.calendar.currentDate}
                 onClick={date =>
-                  alert(`Will go to daily-view of ${date.format('YYYY-MM-DD')}`)
+                  // alert(`Will go to daily-view of ${date.format('YYYY-MM-DD')}`)
+                  this.props.onDrillDown(date.format('YYYY-MM-DD'))
                 }
+                events={this.props.events.filter(event=>{
+                 if (event.start.toDateString() === date.toDate().toDateString() || event.end.getTime()<=date.toDate().toDateString()){
+                  return true
+                 } else {
+                  return false
+                 } 
+                })}
               />
+              </>
+              
             ))}
           </div>
         ))}
@@ -116,15 +144,28 @@ class Calendar extends React.Component {
 }
 
 class Year extends React.Component {
+  
   render() {
+    console.log("Year Props", this.props)
     let { date, ...props } = this.props
+    let events = this.props.events
+    let onDrillDown = this.props.onDrillDown
+    let filteredEvents = events.filter((event)=>{
+      if (event.end.getFullYear() === date.getFullYear()||event.start.getFullYear() === date.getFullYear()) {
+        return true
+      } else {
+        return false
+      }
+    })
+    // console.log("date",date)
+    // console.log("filteredEvents",filteredEvents)
     let range = Year.range(date)
     const months = []
     const firstMonth = dates.startOf(date, 'year')
 
     for (let i = 0; i < 12; i++) {
       months.push(
-        <Calendar key={i + 1} date={dates.add(firstMonth, i, 'month')} />
+        <Calendar key={i + 1} date={dates.add(firstMonth, i, 'month')} events={filteredEvents} onDrillDown={onDrillDown}/>
       )
     }
 
@@ -153,6 +194,8 @@ Year.navigate = (date, action) => {
   }
 }
 
-Year.title = (date, { localizer }) => localizer.format(date, 'yearHeaderFormat')
+Year.title = (date) => {
+  return `${date.getFullYear()}`
+}
 
 export default Year
