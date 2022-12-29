@@ -1,14 +1,5 @@
 import { CalendarIcon, RepeatIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Checkbox,
-  Flex,
-  Heading,
-  HStack,
-  Image,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Checkbox, Flex, Image, Text, VStack } from "@chakra-ui/react";
 import sidebar from "./SideBar.module.css";
 const SideBar = () => {
   return (

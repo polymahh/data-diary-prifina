@@ -1,4 +1,5 @@
 import { Box, Flex, Grid, HStack, Text } from "@chakra-ui/react";
+import DayItem from "./DayItem";
 
 const DaysRow = ({ localizer, view, date }) => {
   const monthArr = [
@@ -28,17 +29,7 @@ const DaysRow = ({ localizer, view, date }) => {
       borderRadius={"8px"}
     >
       {weekArr.map((day) => (
-        <Flex
-          py={2}
-          justifyContent={"center"}
-          bg={day === today ? "white" : "bg"}
-          color={day === today ? "primary" : "secondary"}
-          borderRadius={"8px"}
-        >
-          <Text fontSize={"14px"} noOfLines={1}>
-            {day}
-          </Text>
-        </Flex>
+        <DayItem day={day} today={today} />
       ))}
     </Grid>
   ) : view === "month" ? (
@@ -51,17 +42,7 @@ const DaysRow = ({ localizer, view, date }) => {
       borderRadius={"8px"}
     >
       {monthArr.map((day) => (
-        <Flex
-          py={2}
-          justifyContent={"center"}
-          bg={day === today ? "white" : "bg"}
-          color={day === today ? "primary" : "secondary"}
-          borderRadius={"8px"}
-        >
-          <Text fontSize={"14px"} noOfLines={1}>
-            {day}
-          </Text>
-        </Flex>
+        <DayItem day={day} today={today} />
       ))}
     </Grid>
   ) : null;
