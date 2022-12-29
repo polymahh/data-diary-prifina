@@ -1,0 +1,16 @@
+.sidebar{
+    padding: 2rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    align-items: center;
+}
+
+.logo{
+    display: flex;
+    justify-content: center;
+}
+.logo span {
+    font-size: 24px;
+    font-weight: 600;
+}

@@ -1,17 +1,18 @@
-.body {
-    margin: 0;
-    display: grid;
-    grid-template-columns: 30% auto;
-    grid-template-rows: auto;
-    grid-template-areas: "sidebar calendar";
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 
-.sidebar {
-    grid-area: "sidebar";
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
 }
+:root{
+  --bg:#F6F5FA;
+  --iconColor:#8675CB;
+  --darkText:#808099;
+  --bordercolor: #EEEBF8
 
-.sidebar {
-    grid-area: "calendar";
+
 }
 
 .hidden {
@@ -73,4 +74,5 @@
   .date.next-month {
     color: grey;
   }
+  
   

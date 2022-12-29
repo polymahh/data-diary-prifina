@@ -122,7 +122,10 @@ const dataModels = {
 export function getGoogleActivityWeekData(dataModel, data) {
     console.log(data)
     let zoomData = data;
+    
     const zoomModel = dataModels[dataModel].mockup;
+    // ex : dataModels.ActivityWeek.mockup wich is this object => ActivitySummaryWeekModel
+    
     
     let overviewData = {};
     [
@@ -130,6 +133,12 @@ export function getGoogleActivityWeekData(dataModel, data) {
     ].forEach((rootKey)=>{
         switch(rootKey){
         case "aggregate":
+            // ex for this swich case => overviewData={
+            // aggregate:{
+            // types: zoomModel.types(),
+            // confidence: zoomModel.confidence()
+            // }
+            // }
             overviewData[rootKey] = {};
             [
             "types",
@@ -142,6 +151,7 @@ export function getGoogleActivityWeekData(dataModel, data) {
                         types.push(zoomData[i].p_type)
                     }
                     overviewData[rootKey][aggregateKey] = zoomModel[aggregateKey](types);
+                    //ex: ActivitySummaryWeekModel is an object with two methods => ActivitySummaryWeekModel.types
                     break
                 case "confidence":
                     let confidences = []
