@@ -5,8 +5,8 @@ const DayItem = ({ day, today }) => {
     <Flex
       py={2}
       justifyContent={"center"}
-      bg={day === today ? "white" : "bg"}
-      color={day === today ? "primary" : "secondary"}
+      bg={today.includes(day) ? "white" : "bg"}
+      color={today.includes(day) ? "primary" : "secondary"}
       borderRadius={"8px"}
     >
       <Text fontSize={"14px"} noOfLines={1}>

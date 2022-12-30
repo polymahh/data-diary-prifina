@@ -20,7 +20,7 @@
   flex-direction: column;
   flex: 1;
   width: 100%;
-  border: 1px solid $calendar-border;
+  border: 0px solid $calendar-border;
   min-height: 0;
 
   .rbc-time-gutter {
@@ -50,7 +50,7 @@
 }
 
 .rbc-time-header {
-  display: flex;
+  display: none;
   flex: 0 0 auto; // should not shrink below height
   flex-direction: row;
 
@@ -107,7 +107,7 @@
   flex: 1 0 0%;
   align-items: flex-start;
   width: 100%;
-  border-top: 2px solid $calendar-border;
+  // border-top: 2px solid $calendar-border;
   overflow-y: auto;
   position: relative;
 
@@ -116,7 +116,7 @@
   }
 
   > * + * > * {
-    border-left: 1px solid $cell-border;
+    border-left: 1px dashed $cell-border;
   }
 
   .rbc-rtl & > * + * > * {

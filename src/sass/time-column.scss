@@ -12,8 +12,8 @@
 
 
 .rbc-timeslot-group {
-  border-bottom: 1px solid $cell-border;
-  min-height: 40px;
+  border-bottom: 0px solid $cell-border;
+  min-height: 100px;
   display: flex;
   flex-flow: column nowrap;
 }

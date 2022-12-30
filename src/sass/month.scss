@@ -35,7 +35,7 @@
 .rbc-month-view {
   position: relative;
   border: 1px solid $calendar-border;
-  display: flex;
+  display: block;
   flex-direction: column;
   flex: 1 0 0;
   width: 100%;
@@ -58,7 +58,7 @@
   flex-basis: 0px;
   overflow: hidden;
 
-  height: 100%; // ie-fix
+  height: 19%; // ie-fix
 
   & + & {
     border-top: 1px solid $cell-border;

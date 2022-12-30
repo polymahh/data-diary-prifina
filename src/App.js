@@ -32,7 +32,7 @@ import {googleEvents} from "./Events/googleEvents"
 import {whoopEvents} from "./Events/whoopEvents"
 import SideBar from "./Components/SideBar/SideBar";
 import Toolbar from "./Components/Toolbar"
-import { calc, Flex, HStack, VStack } from "@chakra-ui/react"
+import { Box, calc, Container, Flex, HStack, VStack } from "@chakra-ui/react"
 import DaysRow from "./Components/DaysRow"
 // const localizer = Calendar.momentLocalizer(moment); // or globalizeLocalizer
 // localizer.formats.yearHeaderFormat = "YYYY";
@@ -48,7 +48,8 @@ const varToString = (attr) => {
   return str
 }
 var myEventsList = [...ouraEvents,...googleEvents,...whoopEvents]
-
+const allDayEvents = myEventsList.filter(item => item.allDay)
+const myEvents = myEventsList.filter(item => !item.allDay)
 
 console.log(myEventsList)
 
@@ -1299,8 +1300,7 @@ const lengthCalc = (source) => {
 // ]
   return (
     <Flex
-    w={"full"}
-    minH={"100vh"}
+    
     >
     {/* <sideBar
       view={view}
@@ -1314,22 +1314,24 @@ const lengthCalc = (source) => {
       dataView={dataView}
     /> */}
     <SideBar/>
-    <VStack
-    w={"full"}
+    <Flex
+    flexGrow={1}
+    direction={"column"}
     justifyContent={"start"}
     >
     <Toolbar onNavigate={onNavigate} date={date} onView={onView} localizer={localizer} view={view}/>
       
-    <Flex w={"full"} bg={"white"} h={"full"}>
+    <Box  bg={"white"} flexGrow={1} >
       <Calendar className="calendar"
         localizer={localizer}
-        events={myEventsList}
+        events={myEvents}
+        backgroundEvents={allDayEvents}
         startAccessor="start"
         endAccessor="end"
         onView={onView}
         view={view}
         onRangeChange={onRangeChange}
-        style={{width:"100%" ,height: "100%" }}
+        style={{width:"100%" ,padding: " 16px 0px 8px 0px"  }}
         onSelectEvent={onSelectEvent}
         toolbar={false}
         views={views}
@@ -1338,8 +1340,8 @@ const lengthCalc = (source) => {
         date={date}
         onNavigate={onNavigate}
       />
+    </Box >
     </Flex>
-    </VStack>
     </Flex>
   );
 }

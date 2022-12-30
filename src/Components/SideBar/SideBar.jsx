@@ -1,9 +1,30 @@
 import { CalendarIcon, RepeatIcon } from "@chakra-ui/icons";
 import { Box, Checkbox, Flex, Image, Text, VStack } from "@chakra-ui/react";
-import sidebar from "./SideBar.module.css";
 const SideBar = () => {
   return (
-    <Flex py={9} px={[4, 10, 16]} h={"full"} direction={"column"} gap={16}>
+    <Flex
+      minW={"fit-content"}
+      py={9}
+      px={[4, 10, 16]}
+      h={"full"}
+      spacing={0}
+      position={"-webkit-sticky"}
+      overflowY={"scroll"}
+      style={{
+        zIndex: 5,
+        position: "sticky",
+        top: "-1px",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+      }}
+      css={{
+        "&::-webkit-scrollbar": {
+          display: "none",
+        },
+      }}
+      direction={"column"}
+      gap={16}
+    >
       <Flex w={"max-content"}>
         <Box>
           <Image src="logo.png" alt="Data Diary" />
@@ -74,19 +95,19 @@ const SideBar = () => {
         <Text color={"secondary"} fontSize={"20px"} fontWeight={500}>
           LABELS
         </Text>
-        <Checkbox colorScheme={"cyan"} textColor={"primary"} defaultChecked>
+        <Checkbox colorScheme={"health"} defaultChecked>
           Health
         </Checkbox>
-        <Checkbox colorScheme={"orange"} textColor={"primary"} defaultChecked>
+        <Checkbox colorScheme={"fitness"} defaultChecked>
           Fitness
         </Checkbox>
-        <Checkbox colorScheme={"green"} textColor={"primary"} defaultChecked>
+        <Checkbox colorScheme={"route"} defaultChecked>
           Route
         </Checkbox>
-        <Checkbox colorScheme={"purple"} textColor={"primary"} defaultChecked>
+        <Checkbox colorScheme={"business"} defaultChecked>
           Business
         </Checkbox>
-        <Checkbox colorScheme={"pink"} textColor={"primary"} defaultChecked>
+        <Checkbox colorScheme={"personal"} defaultChecked>
           Personal
         </Checkbox>
       </VStack>

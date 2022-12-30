@@ -48,14 +48,14 @@ const events = [
       rest_mode_state: 0,
     },
     {
-      summary_date: "2022-11-06",
+      summary_date: "2022-12-26",
       prifinaSourceType: "Oura",
       prifinaSourceEventType: "SleepSummary",
       period_id: 0,
       is_longest: 1,
       timezone: 120,
-      bedtime_start: "2022-11-07T02:13:19+02:00",
-      bedtime_end: "2022-11-07T08:12:19+02:00",
+      bedtime_start: "2022-12-26T02:13:19+02:00",
+      bedtime_end: "2022-12-26T08:12:19+02:00",
       score: 70,
       score_total: 57,
       score_disturbances: 83,
@@ -84,14 +84,14 @@ const events = [
       rmssd_5min: [0, 0, 62, 0, 75, 52, 56, 56, 64, 57, 55, 78, 77, 83, 70, 35, 21, 25, 49, 44, 48, 48, 62, 69, 66, 64, 79, 59, 67, 66, 70, 63, 53, 57, 53, 57, 38, 26, 18, 24, 30, 35, 36, 46, 53, 59, 50, 50, 53, 53, 57, 52, 41, 37, 49, 47, 48, 35, 32, 34, 52, 57, 62, 57, 70, 81, 81, 65, 69, 72, 64, 0]
     },
     {
-      summary_date: "2022-11-07",
+      summary_date: "2022-12-28",
       prifinaSourceType: "Oura",
       prifinaSourceEventType: "SleepSummary",
       period_id: 0,
       is_longest: 1,
       timezone: 120,
-      bedtime_start: "2022-11-08T02:13:19+02:00",
-      bedtime_end: "2022-11-08T08:12:19+02:00",
+      bedtime_start: "2022-12-28T02:13:19+02:00",
+      bedtime_end: "2022-12-28T08:12:19+02:00",
       score: 70,
       score_total: 57,
       score_disturbances: 83,
@@ -120,7 +120,7 @@ const events = [
       rmssd_5min: [0, 0, 62, 0, 75, 52, 56, 56, 64, 57, 55, 78, 77, 83, 70, 35, 21, 25, 49, 44, 48, 48, 62, 69, 66, 64, 79, 59, 67, 66, 70, 63, 53, 57, 53, 57, 38, 26, 18, 24, 30, 35, 36, 46, 53, 59, 50, 50, 53, 53, 57, 52, 41, 37, 49, 47, 48, 35, 32, 34, 52, 57, 62, 57, 70, 81, 81, 65, 69, 72, 64, 0]
     },
     {
-      summary_date: "2022-11-07",
+      summary_date: "2022-12-23",
       prifinaSourceType: "Oura",
       prifinaSourceEventType: "Readiness",
       period_id: 0,
@@ -136,7 +136,7 @@ const events = [
       rest_mode_state: 0,
     },
     {
-      summary_date: "2022-11-08",
+      summary_date: "2022-12-24",
       prifinaSourceType: "Oura",
       prifinaSourceEventType: "Readiness",
       period_id: 0,
@@ -152,7 +152,7 @@ const events = [
       rest_mode_state: 0,
     },
     {
-      summary_date: "2022-11-09",
+      summary_date: "2022-12-29",
       prifinaSourceType: "Oura",
       prifinaSourceEventType: "Readiness",
       period_id: 0,
@@ -168,7 +168,7 @@ const events = [
       rest_mode_state: 0,
     },
     {
-      summary_date: "2022-11-10",
+      summary_date: "2022-12-28",
       prifinaSourceType: "Oura",
       prifinaSourceEventType: "Readiness",
       period_id: 0,
@@ -184,7 +184,7 @@ const events = [
       rest_mode_state: 0,
     },
     {
-      summary_date: "2022-11-11",
+      summary_date: "2022-12-27",
       prifinaSourceType: "Oura",
       prifinaSourceEventType: "Readiness",
       period_id: 0,
@@ -200,7 +200,7 @@ const events = [
       rest_mode_state: 0,
     },
     {
-      summary_date: "2022-11-12",
+      summary_date: "2022-12-26",
       prifinaSourceType: "Oura",
       prifinaSourceEventType: "Readiness",
       period_id: 0,
@@ -216,7 +216,23 @@ const events = [
       rest_mode_state: 0,
     },
     {
-      "summary_date": "2022-11-07",
+      summary_date: "2022-12-30",
+      prifinaSourceType: "Oura",
+      prifinaSourceEventType: "Readiness",
+      period_id: 0,
+      score: 62,
+      score_previous_night: 5,
+      score_sleep_balance: 75,
+      score_previous_day: 61,
+      score_activity_balance: 77,
+      score_resting_hr: 98,
+      score_hrv_balance: 90,
+      score_recovery_index: 45,
+      score_temperature: 86,
+      rest_mode_state: 0,
+    },
+    {
+      "summary_date": "2022-12-25",
       prifinaSourceType: "Oura",
       prifinaSourceEventType: "Activity",
       "day_start": "2022-11-07T04:00:00+03:00",
@@ -262,8 +278,8 @@ const events = [
           allDay: true,
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
           // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-          start: new Date(events[i].summary_date),
-          end: new Date(events[i].summary_date),
+          start: new Date(`${events[i].summary_date}T00:00:00`),
+          end: new Date(`${events[i].summary_date}T23:59:59`),
           data: events[i],
         })
         break

@@ -43,8 +43,20 @@ const Toolbar = ({ onNavigate, date, localizer, onView, view }) => {
   };
 
   return (
-    <VStack bg={"white"} pb={4} px={2} w={"full"}>
+    <VStack
+      bg={"bg"}
+      pb={4}
+      w={"full"}
+      spacing={0}
+      position={"-webkit-sticky"}
+      style={{
+        zIndex: 5,
+        position: "sticky",
+        top: "-1px",
+      }}
+    >
       <HStack
+        bg={"white"}
         gap={4}
         pl={16}
         pr={4}
@@ -116,7 +128,7 @@ const Toolbar = ({ onNavigate, date, localizer, onView, view }) => {
         <SearchEvent />
         {/* avatar */}
       </HStack>
-      <Flex w={"full"}>
+      <Flex w={"full"} bg={"white"} py={2} pr={2} mt={-2}>
         <Box minW={view === "week" ? "75px" : "0px"}>{""}</Box>
         <DaysRow localizer={localizer} view={view} date={date} />
       </Flex>

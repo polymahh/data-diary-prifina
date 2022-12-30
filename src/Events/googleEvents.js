@@ -56,6 +56,14 @@ const events = [
       prifinaSourceEventType: "Activity",
     },
     {
+      p_timestamp: 1417577043477,
+      p_datetime: "2022-12-30T03:24:03.477Z",
+      p_type: "STILL",
+      p_confidence: 100,
+      prifinaSourceType: "Google",
+      prifinaSourceEventType: "Activity",
+    },
+    {
       latitudeE7: 606224118,
       longitudeE7: 248047081,
       address: "Mäkikuumolantie 3\n05800 Hyvinkää\nSuomi",
@@ -93,6 +101,17 @@ const events = [
       activityType: "IN_PASSENGER_VEHICLE",
       startTimestamp: "2022-02-01T09:12:21.890Z",
       endTimestamp: "2022-02-01T09:24:24.250Z",
+      prifinaSourceType: "Google",
+      prifinaSourceEventType: "Route",
+    },
+    {
+      startLocation: { latitudeE7: 605841426, longitudeE7: 248303862 },
+      endLocation: { latitudeE7: 606216471, longitudeE7: 248040694 },
+      distance: 4410,
+      confidence: "HIGH",
+      activityType: "IN_PASSENGER_VEHICLE",
+      startTimestamp: "2022-12-30T09:12:21.890Z",
+      endTimestamp: "2022-12-30T09:24:24.250Z",
       prifinaSourceType: "Google",
       prifinaSourceEventType: "Route",
     }

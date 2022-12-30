@@ -33,6 +33,7 @@
     color: #ccbe88;
     font-weight: bold;
   }
+
   
   .day {
     display: inline-block;
@@ -49,6 +50,9 @@
     border-radius: 50px;
     border: none;
     outline: none;
+  }
+  .rbc-time-header{
+    display: none;
   }
   
   .date.in-month:hover {
