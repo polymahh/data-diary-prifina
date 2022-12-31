@@ -32,8 +32,11 @@ import {googleEvents} from "./Events/googleEvents"
 import {whoopEvents} from "./Events/whoopEvents"
 import SideBar from "./Components/SideBar/SideBar";
 import Toolbar from "./Components/Toolbar"
-import { Box, calc, Container, Flex, HStack, VStack } from "@chakra-ui/react"
+import { Box, calc, Container, Flex, HStack, theme, VStack } from "@chakra-ui/react"
 import DaysRow from "./Components/DaysRow"
+import Event from "./Components/Event"
+import EventWrapper from "./Components/EventWrapper"
+import { Test } from "./Components/Test"
 // const localizer = Calendar.momentLocalizer(moment); // or globalizeLocalizer
 // localizer.formats.yearHeaderFormat = "YYYY";
 
@@ -1274,6 +1277,39 @@ const lengthCalc = (source) => {
   return num
 }
 
+const eventPropGetter = (event) => {
+  let className = 'custom-event';
+  let bg = '#fff';
+  let text = "red"
+  let border = "red"
+  if (event.category === 'health') {
+    bg = "#E7F0FF"
+    text="#73A1F6";
+    border = "#81aaf7";
+  } else if (event.category === 'business') {
+    bg = '#EEE7FF';
+    text="#ac87fe";
+    border = "#b493fe";
+  } else if (event.category === 'important') {
+    bg = '#d0d0d0';
+    text="health.500";
+  }
+  return {
+    className: className,
+    style: {
+      height:"36px",
+      color:text,
+      backgroundColor: bg,
+      borderColor : border
+    },
+  };
+}
+// make the hours format in day and week views like 12 AM
+const formats =  {
+  timeGutterFormat: (date, culture, localizer) =>
+    localizer.format(date, 'hh A', culture),
+}
+
 // const exapndAll = (bool) => {
 //   var newSourcesShown = {}
 //   var newTypesShown = {}
@@ -1325,13 +1361,15 @@ const lengthCalc = (source) => {
       <Calendar className="calendar"
         localizer={localizer}
         events={myEvents}
+        components={{event:Event}}
+        eventPropGetter={eventPropGetter}
         backgroundEvents={allDayEvents}
         startAccessor="start"
         endAccessor="end"
         onView={onView}
         view={view}
         onRangeChange={onRangeChange}
-        style={{width:"100%" ,padding: " 16px 0px 8px 0px"  }}
+        style={{width:"100%" ,padding: " 16px 16px 8px 0px"  }}
         onSelectEvent={onSelectEvent}
         toolbar={false}
         views={views}
@@ -1339,6 +1377,7 @@ const lengthCalc = (source) => {
         onDrillDown={onDrillDown}
         date={date}
         onNavigate={onNavigate}
+        formats={formats}
       />
     </Box >
     </Flex>

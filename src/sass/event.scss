@@ -12,6 +12,8 @@
   cursor: pointer;
   width: 100%;
   text-align: left;
+  display: flex;
+  align-items: center;
 
   .rbc-slot-selecting & {
     cursor: inherit;
@@ -28,6 +30,7 @@
 }
 
 .rbc-event-label {
+  display: none;
   @extend .rbc-ellipsis;
   font-size: 80%;
 }

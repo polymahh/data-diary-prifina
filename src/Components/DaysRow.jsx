@@ -9,7 +9,7 @@ const DaysRow = ({ localizer, view, date }) => {
     "Wednesday",
     "Thursday",
     "Friday",
-    "Satyurday",
+    "Saturday",
   ];
   const weekArr = [];
 
@@ -25,7 +25,7 @@ const DaysRow = ({ localizer, view, date }) => {
       justifyItems={"stretch"}
       templateColumns="repeat(7, 1fr)"
       bg={"bg"}
-      py={2}
+      p={2}
       borderRadius={"8px"}
     >
       {weekArr.map((day) => (
@@ -38,7 +38,7 @@ const DaysRow = ({ localizer, view, date }) => {
       justifyItems={"stretch"}
       templateColumns="repeat(7, 1fr)"
       bg={"bg"}
-      py={2}
+      p={2}
       borderRadius={"8px"}
     >
       {monthArr.map((day) => (
