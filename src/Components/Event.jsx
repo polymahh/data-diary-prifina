@@ -2,11 +2,17 @@ import { PhoneIcon } from "@chakra-ui/icons";
 import { Box, Flex, Text, VStack, Icon } from "@chakra-ui/react";
 import Icon_business from "../assets/business_icon";
 import Icon_health from "../assets/health_icon";
+import Icon_fitness from "../assets/fitness_icon";
+import Icon_route from "../assets/route_icon";
+import Icon_personal from "../assets/personal_icon";
 
 const Event = ({ event }) => {
   const icons = {
     "icon business": Icon_business,
     "icon health": Icon_health,
+    "icon route": Icon_route,
+    "icon personal": Icon_personal,
+    "icon fitness": Icon_fitness,
   };
   console.log();
   return (
@@ -20,7 +26,9 @@ const Event = ({ event }) => {
             color={"gray.100"}
           />
         </Box>
-        <Text overflowWrap={"break-word"}>{event.title}</Text>
+        <Text pt={1} overflowWrap={"break-word"}>
+          {event.title}
+        </Text>
       </Flex>
     </VStack>
   );

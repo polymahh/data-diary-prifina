@@ -1285,14 +1285,23 @@ const eventPropGetter = (event) => {
   if (event.category === 'health') {
     bg = "#E7F0FF"
     text="#73A1F6";
-    border = "#81aaf7";
+    border = "#CADDFC";
   } else if (event.category === 'business') {
     bg = '#EEE7FF';
     text="#ac87fe";
     border = "#b493fe";
-  } else if (event.category === 'important') {
-    bg = '#d0d0d0';
-    text="health.500";
+  } else if (event.category === 'route') {
+    bg = '#E2FBE2';
+    text="#54C250";
+    border = "#B1F5AF";
+  }else if (event.category === 'fitness') {
+    bg = '#FFEDE7';
+    text="#F17243";
+    border = "#F5CEBF";
+  }else if (event.category === 'personal') {
+    bg = '#FCECFF';
+    text="#ac87fe";
+    border = "#F1CBF8";
   }
   return {
     className: className,

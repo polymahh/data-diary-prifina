@@ -5,9 +5,9 @@ const events = [
       prifinaSourceEventType: "Workout",
       "user_id": 9012,
       "created_at": "2022-04-24T11:25:44.774Z",
-      "updated_at": "2022-04-24T14:25:44.774Z",
-      "start": "2022-04-24T02:25:44.774Z",
-      "end": "2022-04-24T10:25:44.774Z",
+      "updated_at": "2022-04-24T12:25:44.774Z",
+      "start": "2023-01-03T10:25:44.774Z",
+      "end": "2023-01-03T12:25:44.774Z",
       "timezone_offset": "-05:00",
       "sport_id": 1,
       "score_state": "SCORED",
@@ -37,8 +37,8 @@ const events = [
       prifinaSourceEventType: "Cycle",
       "created_at": "2022-04-24T11:25:44.774Z",
       "updated_at": "2022-04-24T14:25:44.774Z",
-      "start": "2022-04-24T02:25:44.774Z",
-      "end": "2022-04-24T10:25:44.774Z",
+      "start": "2023-01-03T02:25:44.774Z",
+      "end": "2023-01-03T10:25:44.774Z",
       "timezone_offset": "-05:00",
       "score_state": "SCORED",
       "score": {
@@ -54,8 +54,8 @@ const events = [
       "user_id": 10129,
       prifinaSourceType: "Whoop",
       prifinaSourceEventType: "Recovery",
-      "created_at": "2022-04-24T11:25:44.774Z",
-      "updated_at": "2022-04-24T14:25:44.774Z",
+      "created_at": "2023-01-03T12:35:44.774Z",
+      "updated_at": "2023-01-03T14:25:44.774Z",
       "score_state": "SCORED",
       "score": {
         "user_calibrating": false,
@@ -73,8 +73,8 @@ const events = [
       prifinaSourceEventType: "Sleep",
       "created_at": "2022-04-24T11:25:44.774Z",
       "updated_at": "2022-04-24T14:25:44.774Z",
-      "start": "2022-04-24T02:25:44.774Z",
-      "end": "2022-04-24T10:25:44.774Z",
+      "start": "2023-01-02T02:25:44.774Z",
+      "end": "2023-01-02T10:25:44.774Z",
       "timezone_offset": "-05:00",
       "nap": false,
       "score_state": "SCORED",
@@ -111,6 +111,7 @@ const events = [
         whoopEvents.push({
           title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].created_at}`,
           allDay: false,
+          category:"personal",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
           // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
           start: new Date(events[i].start),
@@ -122,6 +123,7 @@ const events = [
         whoopEvents.push({
           title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].created_at}`,
           allDay: true,
+          category:"health",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
           // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
           start: new Date(events[i].created_at),
@@ -133,6 +135,7 @@ const events = [
         whoopEvents.push({
           title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].updated_at}`,
           allDay: false,
+          category:"personal",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
           // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
           start: new Date(events[i].start),
@@ -144,6 +147,7 @@ const events = [
         whoopEvents.push({
           title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].updated_at}`,
           allDay: false,
+          category:"fitness",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
           // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
           start: new Date(events[i].start),

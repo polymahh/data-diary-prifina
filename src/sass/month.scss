@@ -6,7 +6,7 @@
 }
 
 .rbc-row-segment {
-  padding: 0 1px 1px 1px;
+  padding: 0 3px 1px 3px;
   display: flex;
   .rbc-event-content {
     @extend .rbc-ellipsis;
@@ -35,7 +35,7 @@
 .rbc-month-view {
   position: relative;
   border: 1px solid $calendar-border;
-  display: block;
+  display: flex;
   flex-direction: column;
   flex: 1 0 0;
   width: 100%;
@@ -46,7 +46,7 @@
 }
 
 .rbc-month-header {
-  display: flex;
+  display: none; //new
   flex-direction: row;
 }
 
@@ -56,9 +56,9 @@
   flex-direction: column;
   flex: 1 0 0; // postcss will remove the 0px here hence the duplication below
   flex-basis: 0px;
-  overflow: hidden;
+  //overflow: hidden;
 
-  height: 19%; // ie-fix
+  // height: 19%; // ie-fix
 
   & + & {
     border-top: 1px solid $cell-border;
@@ -97,7 +97,7 @@
   flex: 1 0 0%;
 
   & + & {
-    border-left: 1px solid $cell-border;
+    // border-left: 1px solid $cell-border; // new
   }
 
   .rbc-rtl & + & {

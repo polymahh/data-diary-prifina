@@ -1,7 +1,7 @@
 const events = [
     {
       p_timestamp: 1667445628000,
-      p_datetime: "2022-11-03T03:20:28.681Z",
+      p_datetime: "2023-01-04T03:20:28.681Z",
       p_latitude: 602447266,
       p_longitude: 247573079,
       p_accuracy: 32,
@@ -13,7 +13,7 @@ const events = [
     },
     {
       p_timestamp: 1667448169000,
-      p_datetime: "2022-11-03T04:02:49.426Z",
+      p_datetime: "2023-01-03T04:02:49.426Z",
       p_latitude: 602446995,
       p_longitude: 247574923,
       p_accuracy: 64,
@@ -25,7 +25,7 @@ const events = [
     },
     {
       p_timestamp: 1417576831121,
-      p_datetime: "2014-12-03T03:20:31.121Z",
+      p_datetime: "2023-01-05T03:20:31.121Z",
       p_type: "STILL",
       p_confidence: 87,
       prifinaSourceType: "Google",
@@ -33,7 +33,7 @@ const events = [
     },
     {
       p_timestamp: 1417576831121,
-      p_datetime: "2014-12-03T03:20:31.121Z",
+      p_datetime: "2023-01-04T03:20:31.121Z",
       p_type: "UNKNOWN",
       p_confidence: 10,
       prifinaSourceType: "Google",
@@ -41,7 +41,7 @@ const events = [
     },
     {
       p_timestamp: 1417576831121,
-      p_datetime: "2014-12-03T03:20:31.121Z",
+      p_datetime: "2023-01-03T03:20:31.121Z",
       p_type: "IN_VEHICLE",
       p_confidence: 3,
       prifinaSourceType: "Google",
@@ -49,7 +49,7 @@ const events = [
     },
     {
       p_timestamp: 1417577043477,
-      p_datetime: "2014-12-03T03:24:03.477Z",
+      p_datetime: "2023-01-02T03:24:03.477Z",
       p_type: "STILL",
       p_confidence: 100,
       prifinaSourceType: "Google",
@@ -57,7 +57,7 @@ const events = [
     },
     {
       p_timestamp: 1417577043477,
-      p_datetime: "2022-12-30T03:24:03.477Z",
+      p_datetime: "2023-01-01T03:24:03.477Z",
       p_type: "STILL",
       p_confidence: 100,
       prifinaSourceType: "Google",
@@ -73,8 +73,8 @@ const events = [
       visitConfidence: 88,
       placeVisitType: "SINGLE_PLACE",
       placeVisitImportance: "MAIN",
-      startTimestamp: "2022-02-01T09:24:24.250Z",
-      endTimestamp: "2022-02-01T09:40:22.633Z",
+      startTimestamp: "2023-01-03T09:24:24.250Z",
+      endTimestamp: "2023-01-03T09:40:22.633Z",
       prifinaSourceType: "Google",
       prifinaSourceEventType: "Place",
     },
@@ -88,8 +88,8 @@ const events = [
       visitConfidence: 88,
       placeVisitType: "SINGLE_PLACE",
       placeVisitImportance: "MAIN",
-      startTimestamp: "2022-02-01T09:24:24.250Z",
-      endTimestamp: "2022-02-01T09:55:22.633Z",
+      startTimestamp: "2023-01-02T09:24:24.250Z",
+      endTimestamp: "2023-01-02T09:55:22.633Z",
       prifinaSourceType: "Google",
       prifinaSourceEventType: "Place",
     },
@@ -99,8 +99,8 @@ const events = [
       distance: 4410,
       confidence: "HIGH",
       activityType: "IN_PASSENGER_VEHICLE",
-      startTimestamp: "2022-02-01T09:12:21.890Z",
-      endTimestamp: "2022-02-01T09:24:24.250Z",
+      startTimestamp: "2023-01-04T09:12:21.890Z",
+      endTimestamp: "2023-01-04T09:24:24.250Z",
       prifinaSourceType: "Google",
       prifinaSourceEventType: "Route",
     },
@@ -110,8 +110,8 @@ const events = [
       distance: 4410,
       confidence: "HIGH",
       activityType: "IN_PASSENGER_VEHICLE",
-      startTimestamp: "2022-12-30T09:12:21.890Z",
-      endTimestamp: "2022-12-30T09:24:24.250Z",
+      startTimestamp: "2023-01-01T09:12:21.890Z",
+      endTimestamp: "2023-01-01T09:24:24.250Z",
       prifinaSourceType: "Google",
       prifinaSourceEventType: "Route",
     }
@@ -125,6 +125,7 @@ const events = [
         googleEvents.push({
           title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].startTimestamp.split("T")[0]}`,
           allDay: false,
+          category:"route",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
           // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
           start: new Date(events[i].startTimestamp),
@@ -136,6 +137,7 @@ const events = [
         googleEvents.push({
           title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].startTimestamp.split("T")[0]}`,
           allDay: false,
+          category:"route",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
           // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
           start: new Date(events[i].startTimestamp),
@@ -147,6 +149,7 @@ const events = [
         googleEvents.push({
           title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].p_datetime}`,
           allDay: false,
+          category:"fitness",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
           // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
           start: new Date(events[i].p_datetime),
@@ -158,6 +161,7 @@ const events = [
         googleEvents.push({
           title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].p_datetime}`,
           allDay: false,
+          category:"route",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
           // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
           start: new Date(events[i].p_datetime),

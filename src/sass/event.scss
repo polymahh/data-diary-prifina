@@ -12,7 +12,7 @@
   cursor: pointer;
   width: 100%;
   text-align: left;
-  display: flex;
+  display: grid; //new
   align-items: center;
 
   .rbc-slot-selecting & {

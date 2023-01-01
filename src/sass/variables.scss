@@ -1,5 +1,5 @@
-$out-of-range-color: lighten(#333, 40%) !default;
-$out-of-range-bg-color: lighten(#333, 70%) !default;
+$out-of-range-color: #F6F5FA !default;
+$out-of-range-bg-color: #F6F5FA !default;
 
 $calendar-border: #ECE9F9 !default;
 $cell-border: #ECE9F9 !default;
@@ -35,3 +35,4 @@ $today-highlight-bg: #eaf6ff !default;
 $label-color : #808099;
 
 $layout-font : 'Inter', sans-serif;
+$bg:#F6F5FA;
