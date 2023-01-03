@@ -50,7 +50,7 @@ const Toolbar = ({ onNavigate, date, localizer, onView, view }) => {
       spacing={0}
       position={"-webkit-sticky"}
       style={{
-        zIndex: 5,
+        zIndex: 200,
         position: "sticky",
         top: "-1px",
       }}
@@ -129,7 +129,7 @@ const Toolbar = ({ onNavigate, date, localizer, onView, view }) => {
         {/* avatar */}
       </HStack>
       <Flex w={"full"} bg={"white"} py={2} px={2} mt={-2}>
-        <Box minW={view === "week" ? "66px" : "0px"}>{""}</Box>
+        <Box minW={view === "week" ? "62px" : "0px"}>{""}</Box>
         <DaysRow localizer={localizer} view={view} date={date} />
       </Flex>
     </VStack>

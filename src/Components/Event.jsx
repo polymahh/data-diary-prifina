@@ -14,7 +14,7 @@ const Event = ({ event }) => {
     "icon personal": Icon_personal,
     "icon fitness": Icon_fitness,
   };
-  console.log();
+
   return (
     <VStack alignItems={"flex-start"}>
       <Flex gap={1} alignItems={"flex-start"}>
@@ -27,7 +27,7 @@ const Event = ({ event }) => {
           />
         </Box>
         <Text pt={1} overflowWrap={"break-word"}>
-          {event.title}
+          {event.index}
         </Text>
       </Flex>
     </VStack>

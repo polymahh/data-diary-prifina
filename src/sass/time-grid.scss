@@ -107,7 +107,8 @@
   flex: 1 0 0%;
   align-items: flex-start;
   width: 100%;
-  // border-top: 2px solid $calendar-border;
+  // border-top: 2px solid $calendar-border; new
+  gap: 6px;
   overflow-y: auto;
   position: relative;
 
@@ -133,10 +134,10 @@
 
 .rbc-current-time-indicator {
   position: absolute;
-  z-index: 3;
+  z-index: 199;
   left: 0;
   right: 0;
-  height: 1px;
+  height: 3px;
 
   background-color: $current-time-color;
   pointer-events: none;

@@ -51,10 +51,26 @@ const varToString = (attr) => {
   return str
 }
 var myEventsList = [...ouraEvents,...googleEvents,...whoopEvents]
-const allDayEvents = myEventsList.filter(item => item.allDay)
-const myEvents = myEventsList.filter(item => !item.allDay)
+// background event 
+const allDayEvents = myEventsList.filter(item => item.allDay).sort((a,b)=> new Date(a.start) - new Date(b.start))
+// non background events with an index showing number of overlap events
+const arrEvents = myEventsList.filter(item => !item.allDay).sort((a,b)=> new Date(a.start) - new Date(b.start))
+const myEvents = []
+arrEvents.map((event,idx)=>{
+  let index = 0
+  let cur = idx && new Date(event.start)
+  let prev = idx && new Date(myEvents[idx-1].end)
+  if(idx > 0 && cur.getDate() == prev.getDate() && cur >  prev){
+    console.log(cur.getDate())
+    index = myEvents[idx-1].index + 1
+    myEvents.push({...event,index})
+  }else myEvents.push({...event,index})
+  
+})
 
-console.log(myEventsList)
+
+
+console.log(myEvents)
 
 
 function App() {
@@ -1277,11 +1293,15 @@ const lengthCalc = (source) => {
   return num
 }
 
+// event layout and style like color based on category
 const eventPropGetter = (event) => {
+  
+ 
   let className = 'custom-event';
   let bg = '#fff';
   let text = "red"
   let border = "red"
+  
   if (event.category === 'health') {
     bg = "#E7F0FF"
     text="#73A1F6";
@@ -1303,21 +1323,26 @@ const eventPropGetter = (event) => {
     text="#ac87fe";
     border = "#F1CBF8";
   }
+  
   return {
     className: className,
     style: {
       height:"36px",
       color:text,
       backgroundColor: bg,
-      borderColor : border
+      borderColor : border,
+      minWidth: `${100}%`,
+      // marginLeft:`-${event.index * 40}px`,
+      zIndex : `${event.index}`
     },
   };
 }
-// make the hours format in day and week views like 12 AM
+// foramt hours column in day and week views like this : 00 AM
 const formats =  {
   timeGutterFormat: (date, culture, localizer) =>
     localizer.format(date, 'hh A', culture),
 }
+
 
 // const exapndAll = (bool) => {
 //   var newSourcesShown = {}
