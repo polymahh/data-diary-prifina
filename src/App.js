@@ -1,44 +1,26 @@
+// styles 
 import "./App.css"
 import "./sass/styles.scss"
-
-// import './calendar.css';
-
-import { Calendar, momentLocalizer,Views, } from 'react-big-calendar'
+import { Box, Flex,} from "@chakra-ui/react"
+// react
+import { useState,useCallback, useEffect,useMemo } from "react";
+// calendar library
+import { Calendar, momentLocalizer, } from 'react-big-calendar'
 import moment from 'moment'
-import {
-  getReadinessSummaryWeekData,
-  getSleepSummaryWeekData,
-  getActivitySummaryWeekData
-} from "./zoom-data/ouraZoom.js"
-import {
-  getGoogleActivityWeekData,
-  getGoogleLocationWeekData,
-  getGooglePlacesWeekWeekData,
-  getGoogleRoutesWeekWeekData,
-} from "./zoom-data/googleZoom.js"
-import {
-  getWhoopWorkoutWeekData,
-  getWhoopSleepWeekData,
-  getWhoopRecoveryWeekData,
-  getWhoopCycleWeekData
-} from "./zoom-data/whoopZoom"
-import { useState,useCallback, useEffect } from "react";
 import Year from "./Year";
-import React, { Fragment, useMemo } from 'react'
 
-// events
+// events and utils
 import {ouraEvents} from "./Events/ouraEvents"
 import {googleEvents} from "./Events/googleEvents"
 import {whoopEvents} from "./Events/whoopEvents"
+import {weekZoomData} from './range-zoom-data/week-zoom-data'
+
+// components
 import SideBar from "./Components/SideBar/SideBar";
 import Toolbar from "./Components/Toolbar"
-import { Box, calc, Container, Flex, HStack, theme, VStack } from "@chakra-ui/react"
-import DaysRow from "./Components/DaysRow"
 import Event from "./Components/Event"
 import EventWrapper from "./Components/EventWrapper"
-import { Test } from "./Components/Test"
-// const localizer = Calendar.momentLocalizer(moment); // or globalizeLocalizer
-// localizer.formats.yearHeaderFormat = "YYYY";
+
 
 
 
@@ -53,21 +35,24 @@ const varToString = (attr) => {
 var myEventsList = [...ouraEvents,...googleEvents,...whoopEvents]
 // background event 
 const allDayEvents = myEventsList.filter(item => item.allDay).sort((a,b)=> new Date(a.start) - new Date(b.start))
-// non background events with an index showing number of overlap events
+// non background events
 const arrEvents = myEventsList.filter(item => !item.allDay).sort((a,b)=> new Date(a.start) - new Date(b.start))
-const myEvents = []
-arrEvents.map((event,idx)=>{
-  let index = 0
-  let cur = idx && new Date(event.start)
-  let prev = idx && new Date(myEvents[idx-1].end)
-  if(idx > 0 && cur.getDate() == prev.getDate() && cur >  prev){
-    console.log(cur.getDate())
-    index = myEvents[idx-1].index + 1
-    myEvents.push({...event,index})
-  }else myEvents.push({...event,index})
-  
-})
+const myEvents = arrEvents.map(event => {return {...event,overlap:0,index:0}})// index for zIndex and overlap for left position
 
+for(let i = 0 ; i < myEvents.length ; i++ ){
+  for(let j = i+1 ; j < myEvents.length; j++){
+    let iEnd = new Date(myEvents[i].end)
+    let iStart = new Date(myEvents[i].start)
+    let jStart = new Date(myEvents[j].start)
+    if(  iEnd.getDate() === jStart.getDate() ){
+      myEvents[j].index +=1
+      if(jStart < iEnd){
+        // myEvents[i].overlap += 1
+        myEvents[j].overlap = myEvents[i].overlap + 1
+      }
+    }
+  }
+}
 
 
 console.log(myEvents)
@@ -86,37 +71,27 @@ function App() {
     }),
     []
   )
-
-  const finalDay = () => {
-    var date = new Date()
-    
-    date.setMonth(date.getMonth() + 1)
-    date.setDate(0)
-    return date.getDate()
-    
-  }
-  const [range, setRange] = useState({
-    start: new Date(`${new Date().getFullYear()}-${(new Date()).getMonth()+1}-01`),
-    end: new Date(`${new Date().getFullYear()}-${(new Date()).getMonth()+1}-${finalDay()}`)
-  })
-  console.log(range)
-  const [test, setTest] = useState(null)
-  const [view, setView] = useState("month")
+  const [view, setView] = useState("week")
   const [zoomData, setZoomData] = useState(0)
   const [sourcesShown, setSourcesShown] = useState({})
   const [typesShown, setTypesShown] = useState({})
   const [date, setDate] = useState(new Date())
 
+  const [range, setRange] = useState({
+    start: new Date(localizer.startOf(date, view)),
+    end: new Date(localizer.endOf(date, view))
+  })
 
 const onView = useCallback((newView) => {
   console.log(newView)
   setView(newView)}, [setView])
 const onRangeChange = (newRange) => {
-  console.log("newRange",newRange)
   setRange(newRange)}
 const onSelectEvent = (event) => {
   // console.log(event)
-  window.alert(JSON.stringify(event.data))}
+  window.alert(JSON.stringify(event.data))
+  console.log(zoomData)
+}
 const getNow = () => {
   console.log("value",1)
   return (
@@ -129,542 +104,37 @@ const onDrillDown = (newDate) => {
     setView("day")
   }
 const onNavigate = useCallback((newDate) => setDate(newDate), [setDate])
-// const ReadinessZoom = getReadinessSummaryWeekData("ReadinessWeek",7)
-// console.log("ReadinessZoom", ReadinessZoom)
-// console.log()
 
 
-// const getZoomData = () => {
-//   var finalData = {}
-//   var sourceData = {}
-//   var typesShown = {}
-//   var filteredData
-//   console.log("getZoomData")
-//   console.log("RANGE", range)
-//   if (view === "week"){
-//     // filter events that are in the same week range
-//     filteredData = myEventsList.filter((event)=>{
-//       // console.log("",event)
-//       for (var i = 0; i< range.length;i++){
-//         if (range[i].getFullYear() === event.start.getFullYear()&&range[i].getMonth() === event.start.getMonth()&&range[i].getDate() === event.start.getDate()){
-//           return true
-//         }
-//       }
-//       return false
-//     })
-//     console.log(filteredData)
 
-//     //Get All Sources
-//     var sources = {}
-    
-//     for (var i = 0; i< filteredData.length;i++){
-//       if (sources[filteredData[i].data.prifinaSourceType]===undefined){
-        
-//         sources[filteredData[i].data.prifinaSourceType] = [filteredData[i].data.prifinaSourceEventType] 
-//       } else if (!sources[filteredData[i].data.prifinaSourceType].includes(filteredData[i].data.prifinaSourceEventType)) {
-//         sources[filteredData[i].data.prifinaSourceType].push(filteredData[i].data.prifinaSourceEventType)
-//       }
-//     }
-//     // sources are every sourceType "oura,google..." with array of thier eventTypes "readiness,sleep..."
-//     // console.log(sources)
-//     Object.entries(sources).forEach(([key, value])=>{
-//       // key is sourceTypes ex "oura,google.."  and value is arr ex [readiness,sleep...]
-//       finalData[key] = {}
-//       sourceData[key] = false
-//       typesShown[key] = {}
+const getZoomData = () => {
+    // filter events that are in the same week range
+    let filteredData = myEventsList.filter((event)=>{
+        if (range["start"].getTime() < event.start.getTime()&&range["end"].getTime() > event.start.getTime()){
+          return true
+        } else {
+          return false
+        }
+    })
 
-//       switch(key){
-//         case "Oura":
-//           value.forEach((type)=>{
-//             finalData[key][type] = {}
-//             typesShown[key][type] = false
-//             switch(type){
-//               case "Readiness":
-//                 finalData[key][type] = getReadinessSummaryWeekData("ReadinessWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === "Oura" && event.data.prifinaSourceEventType === "Readiness"){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "SleepSummary":
-//                 finalData[key][type] = getSleepSummaryWeekData("SleepWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === "Oura" && event.data.prifinaSourceEventType === "SleepSummary"){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               case "Activity":
-//                 finalData[key][type] = getActivitySummaryWeekData("ActivityWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === "Oura" && event.data.prifinaSourceEventType === "Activity"){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               default:
-//                 break
-//             }
-//           })
-//           break
-//         case "Google":
-//           value.forEach((type)=>{
-//             finalData[key][type] = {}
-//             typesShown[key][type] = false
-//             switch(type){
-//               case "Activity":
-//                 finalData[key][type] = getGoogleActivityWeekData("ActivityWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "Location":
-//                 finalData[key][type] = getGoogleLocationWeekData("LocationWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               case "Route":
-//                 finalData[key][type] = getGoogleRoutesWeekWeekData("RoutesWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               case "Place":
-//                 finalData[key][type] = getGooglePlacesWeekWeekData("PlacesWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               default:
-//                 break
-//             }
-//           })
-//           break
-//         case "Whoop":
-//           value.forEach((type)=>{
-//             finalData[key][type] = {}
-//             typesShown[key][type] = false
-//             switch(type){
-//               case "Cycle":
-//                 finalData[key][type] = getWhoopCycleWeekData("CycleWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "Recovery":
-//                 finalData[key][type] = getWhoopRecoveryWeekData("RecoveryWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "Sleep":
-//                 finalData[key][type] = getWhoopSleepWeekData("SleepWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "Workout":
-//                 finalData[key][type] = getWhoopWorkoutWeekData("WorkoutWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               default:
-//                 break
-//             }
-//           })
-//           break    
-//         default:
-//           break
-//       }
-//     })
+    //Get All Sources
+    let sources = {}
+    for (var i = 0; i< filteredData.length;i++){
+      //this forloop will format sources >>> sources = {oura : [readiness,sleep...]}
+      if (sources[filteredData[i].data.prifinaSourceType]===undefined){
+        sources[filteredData[i].data.prifinaSourceType] = [filteredData[i].data.prifinaSourceEventType] 
+      } else if (!sources[filteredData[i].data.prifinaSourceType].includes(filteredData[i].data.prifinaSourceEventType)) {
+        sources[filteredData[i].data.prifinaSourceType].push(filteredData[i].data.prifinaSourceEventType)
+      }
+    }
+    // weekZoomData(filteredData,sources,setZoomData,setSourcesShown,setTypesShown)
+    // console.log(sources)
+    // console.log(zoomData)
+    // console.log(sourcesShown)
+    // console.log(typesShown)
+  
 
-//     //Collect All Data Based on Source and Group (e.g. Readiness)
-
-//     //Execute Zoom
-//     // finalData = {
-//     //   "oura":
-//     //     "readiness":
-//     //       "aggrega te"
-//     //       "aggregate"
-//     // }
-    
-//   } else if (view === "month") {
-
-//     filteredData = myEventsList.filter((event)=>{
-//       // console.log("",event)
-//         // console.log(range[i].getDate())
-//         if (range["start"].getTime() < event.start.getTime()&&range["end"].getTime() > event.start.getTime()){
-//           return true
-//         } else {
-//           return false
-//         }
-//     })
-//     console.log(filteredData)
-//     var sources = {}
-//     for (var i = 0; i< filteredData.length;i++){
-//       if (sources[filteredData[i].data.prifinaSourceType]===undefined){
-//         sources[filteredData[i].data.prifinaSourceType] = [filteredData[i].data.prifinaSourceEventType] 
-//       } else if (!sources[filteredData[i].data.prifinaSourceType].includes(filteredData[i].data.prifinaSourceEventType)) {
-//         sources[filteredData[i].data.prifinaSourceType].push(filteredData[i].data.prifinaSourceEventType)
-//       }
-//     }
-//     // console.log(sources)
-//     Object.entries(sources).forEach(([key, value])=>{
-//       finalData[key] = {}
-//       sourceData[key] = false
-//       typesShown[key] = {}
-
-//       switch(key){
-//         case "Oura":
-//           value.forEach((type)=>{
-//             finalData[key][type] = {}
-//             typesShown[key][type] = false
-//             switch(type){
-//               case "Readiness":
-//                 finalData[key][type] = getReadinessSummaryWeekData("ReadinessWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === "Oura" && event.data.prifinaSourceEventType === "Readiness"){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "SleepSummary":
-//                 finalData[key][type] = getSleepSummaryWeekData("SleepWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === "Oura" && event.data.prifinaSourceEventType === "SleepSummary"){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               case "Activity":
-//                 finalData[key][type] = getActivitySummaryWeekData("ActivityWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === "Oura" && event.data.prifinaSourceEventType === "Activity"){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               default:
-//                 break
-//             }
-//           })
-//           break
-//         case "Google":
-//           value.forEach((type)=>{
-//             finalData[key][type] = {}
-//             typesShown[key][type] = false
-//             switch(type){
-//               case "Activity":
-//                 finalData[key][type] = getGoogleActivityWeekData("ActivityWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "Location":
-//                 finalData[key][type] = getGoogleLocationWeekData("LocationWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               case "Route":
-//                 finalData[key][type] = getGoogleRoutesWeekWeekData("RoutesWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               case "Place":
-//                 finalData[key][type] = getGooglePlacesWeekWeekData("PlacesWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               default:
-//                 break
-//             }
-//           })
-//           break
-//         case "Whoop":
-//           value.forEach((type)=>{
-//             finalData[key][type] = {}
-//             typesShown[key][type] = false
-//             switch(type){
-//               case "Cycle":
-//                 finalData[key][type] = getWhoopCycleWeekData("CycleWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "Recovery":
-//                 finalData[key][type] = getWhoopRecoveryWeekData("RecoveryWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "Sleep":
-//                 finalData[key][type] = getWhoopSleepWeekData("SleepWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "Workout":
-//                 finalData[key][type] = getWhoopWorkoutWeekData("WorkoutWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               default:
-//                 break
-//             }
-//           })
-//           break    
-//         default:
-//           break
-//       }
-//     })
-//   } else if (view === "year") {
-//     var start = range[0]
-//     var end = new Date("2022-01-01")
-//     end.setFullYear(start.getFullYear() + 1)
-
-//     filteredData = myEventsList.filter((event)=>{
-//       // console.log("",event)
-//         // console.log(range[i].getDate())
-//         if (start.getTime() < event.start.getTime()&&end.getTime() > event.start.getTime()){
-//           return true
-//         } else {
-//           return false
-//         }
-//     })
-//     console.log(filteredData)
-//     var sources = {}
-//     for (var i = 0; i< filteredData.length;i++){
-//       if (sources[filteredData[i].data.prifinaSourceType]===undefined){
-//         sources[filteredData[i].data.prifinaSourceType] = [filteredData[i].data.prifinaSourceEventType] 
-//       } else if (!sources[filteredData[i].data.prifinaSourceType].includes(filteredData[i].data.prifinaSourceEventType)) {
-//         sources[filteredData[i].data.prifinaSourceType].push(filteredData[i].data.prifinaSourceEventType)
-//       }
-//     }
-//     // console.log(sources)
-//     Object.entries(sources).forEach(([key, value])=>{
-//       finalData[key] = {}
-//       sourceData[key] = false
-//       typesShown[key] = {}
-
-//       switch(key){
-//         case "Oura":
-//           value.forEach((type)=>{
-//             finalData[key][type] = {}
-//             typesShown[key][type] = false
-//             switch(type){
-//               case "Readiness":
-//                 finalData[key][type] = getReadinessSummaryWeekData("ReadinessWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === "Oura" && event.data.prifinaSourceEventType === "Readiness"){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "SleepSummary":
-//                 finalData[key][type] = getSleepSummaryWeekData("SleepWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === "Oura" && event.data.prifinaSourceEventType === "SleepSummary"){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               case "Activity":
-//                 finalData[key][type] = getActivitySummaryWeekData("ActivityWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === "Oura" && event.data.prifinaSourceEventType === "Activity"){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               default:
-//                 break
-//             }
-//           })
-//           break
-//         case "Google":
-//           value.forEach((type)=>{
-//             finalData[key][type] = {}
-//             typesShown[key][type] = false
-//             switch(type){
-//               case "Activity":
-//                 finalData[key][type] = getGoogleActivityWeekData("ActivityWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "Location":
-//                 finalData[key][type] = getGoogleLocationWeekData("LocationWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               case "Route":
-//                 finalData[key][type] = getGoogleRoutesWeekWeekData("RoutesWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               case "Place":
-//                 finalData[key][type] = getGooglePlacesWeekWeekData("PlacesWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 // console.log(finalData[key])
-//                 break
-//               default:
-//                 break
-//             }
-//           })
-//           break
-//         case "Whoop":
-//           value.forEach((type)=>{
-//             finalData[key][type] = {}
-//             typesShown[key][type] = false
-//             switch(type){
-//               case "Cycle":
-//                 finalData[key][type] = getWhoopCycleWeekData("CycleWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "Recovery":
-//                 finalData[key][type] = getWhoopRecoveryWeekData("RecoveryWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "Sleep":
-//                 finalData[key][type] = getWhoopSleepWeekData("SleepWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               case "Workout":
-//                 finalData[key][type] = getWhoopWorkoutWeekData("WorkoutWeek",[].concat(...filteredData.filter((event)=>{
-//                   if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
-//                     return true
-//                   } else {
-//                     return false
-//                   }
-//                 }).map(b=>b.data)) )
-//                 break
-//               default:
-//                 break
-//             }
-//           })
-//           break        
-//         default:
-//           break
-//       }
-//     })
-//   }
-//   console.log(finalData)
-//   // console.log("sd",sourceData)
-//   setZoomData(finalData)
-//   setSourcesShown(sourceData)
-//   setTypesShown(typesShown)
-
-
-// }
+}
 
 const secondsDisplay = (total) => {
   var hours = Math.floor(Math.floor(total / 60)/60)
@@ -701,17 +171,9 @@ const millisecondsDisplay = (total) => {
   return `${hours}:${mintues}:${seconds}.${milliseconds}`
 }
 
-// useEffect(() => {
-//   //Runs only on the first render
-//   getZoomData()
-//   // console.log(zoomData)
-// }, [range]);
-
-// useEffect(() => {
-//   //Runs only on the first render
-//   getZoomData()
-//   // console.log(zoomData)
-// }, [test]);
+useEffect(() => {
+  getZoomData()
+}, [range]);
 
 // const dataView = (source, type, aggregateData) => {
 //   switch(view){
@@ -1293,10 +755,8 @@ const lengthCalc = (source) => {
   return num
 }
 
-// event layout and style like color based on category
 const eventPropGetter = (event) => {
-  
- 
+  // eventPropGetter controls event layout and style like color based on category...
   let className = 'custom-event';
   let bg = '#fff';
   let text = "red"
@@ -1327,12 +787,13 @@ const eventPropGetter = (event) => {
   return {
     className: className,
     style: {
-      height:"36px",
+      minHeight:"70px",
       color:text,
       backgroundColor: bg,
       borderColor : border,
       minWidth: `${100}%`,
-      // marginLeft:`-${event.index * 40}px`,
+      // marginLeft:`${!event.overlap && "-50%"}`,
+      left:`${event.overlap * 10}`,
       zIndex : `${event.index}`
     },
   };
@@ -1389,7 +850,7 @@ const formats =  {
     direction={"column"}
     justifyContent={"start"}
     >
-    <Toolbar onNavigate={onNavigate} date={date} onView={onView} localizer={localizer} view={view}/>
+    <Toolbar onNavigate={onNavigate} date={date} onView={onView} localizer={localizer} view={view} onRangeChange={onRangeChange}/>
       
     <Box  bg={"white"} flexGrow={1} >
       <Calendar className="calendar"

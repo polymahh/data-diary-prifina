@@ -13,9 +13,15 @@ import DaysRow from "./DaysRow";
 import RangeMenu from "./RangeMenu";
 import SearchEvent from "./SearchEvent";
 
-const Toolbar = ({ onNavigate, date, localizer, onView, view }) => {
+const Toolbar = ({
+  onNavigate,
+  date,
+  localizer,
+  onView,
+  view,
+  onRangeChange,
+}) => {
   console.log(localizer);
-
   const start = localizer.startOf(date, view);
   const end = localizer.endOf(date, view);
   const handleNext = () => {
@@ -123,7 +129,13 @@ const Toolbar = ({ onNavigate, date, localizer, onView, view }) => {
             />
           </Flex>
 
-          <RangeMenu onView={onView} view={view} />
+          <RangeMenu
+            onView={onView}
+            view={view}
+            onRangeChange={onRangeChange}
+            start={start}
+            end={end}
+          />
         </Flex>
         <SearchEvent />
         {/* avatar */}

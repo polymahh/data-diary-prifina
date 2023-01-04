@@ -123,7 +123,7 @@ const events = [
     switch(events[i].prifinaSourceEventType){
       case "Route":
         googleEvents.push({
-          title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].startTimestamp.split("T")[0]}`,
+          title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType}`,
           allDay: false,
           category:"route",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
@@ -135,7 +135,7 @@ const events = [
         break
       case "Place":
         googleEvents.push({
-          title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].startTimestamp.split("T")[0]}`,
+          title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} `,
           allDay: false,
           category:"route",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
@@ -147,7 +147,7 @@ const events = [
         break
       case "Activity":
         googleEvents.push({
-          title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].p_datetime}`,
+          title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} -`,
           allDay: false,
           category:"fitness",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
@@ -159,7 +159,7 @@ const events = [
         break
       case "Location":
         googleEvents.push({
-          title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].p_datetime}`,
+          title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} `,
           allDay: false,
           category:"route",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),

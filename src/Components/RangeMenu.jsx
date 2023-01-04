@@ -3,7 +3,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 
 const menuArr = ["day", "week", "month", "year"];
 
-const RangeMenu = ({ onView, view }) => {
+const RangeMenu = ({ onView, view, onRangeChange, start, end }) => {
   return (
     <Menu>
       <MenuButton
@@ -21,7 +21,14 @@ const RangeMenu = ({ onView, view }) => {
       </MenuButton>
       <MenuList zIndex={10}>
         {menuArr.map((menu) => (
-          <MenuItem onClick={() => onView(menu)}>{menu}</MenuItem>
+          <MenuItem
+            onClick={() => {
+              onView(menu);
+              onRangeChange({ start, end });
+            }}
+          >
+            {menu}
+          </MenuItem>
         ))}
       </MenuList>
     </Menu>

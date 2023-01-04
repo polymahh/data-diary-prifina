@@ -16,7 +16,7 @@ const Event = ({ event }) => {
   };
 
   return (
-    <VStack alignItems={"flex-start"}>
+    <VStack alignItems={"flex-start"} left={0}>
       <Flex gap={1} alignItems={"flex-start"}>
         <Box borderRadius={"6px"} bg={`${event.category}.500`}>
           <Icon
@@ -27,8 +27,12 @@ const Event = ({ event }) => {
           />
         </Box>
         <Text pt={1} overflowWrap={"break-word"}>
-          {event.index}
+          {event.title}
         </Text>
+      </Flex>
+
+      <Flex>
+        <Text>{`${new Date(event.start).toLocaleString()}`}</Text>
       </Flex>
     </VStack>
   );

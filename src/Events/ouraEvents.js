@@ -274,7 +274,7 @@ const events = [
     switch(events[i].prifinaSourceEventType){
       case "Readiness":
         ouraEvents.push({
-          title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].summary_date}`,
+          title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType}`,
           allDay: true,
           category:"health",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
@@ -286,7 +286,7 @@ const events = [
         break
       case "SleepSummary":
         ouraEvents.push({
-          title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].summary_date}`,
+          title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} `,
           allDay: false,
           category:"health",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
@@ -298,7 +298,7 @@ const events = [
         break
       case "Activity":
         ouraEvents.push({
-          title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].summary_date}`,
+          title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType}`,
           allDay: true,
           category:"health",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
