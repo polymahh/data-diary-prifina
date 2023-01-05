@@ -16,7 +16,7 @@ import {
     getWhoopCycleWeekData
   } from "../zoom-data/whoopZoom"
 
-export const weekZoomData = (filteredData,sources,setZoomData,setSourcesShown,setTypesShown) => {
+export const weekZoomData = (filteredData,sources,setZoomData) => {
 
     let finalData = {}
   let sourceData = {}
@@ -171,6 +171,5 @@ export const weekZoomData = (filteredData,sources,setZoomData,setSourcesShown,se
       })
 
       setZoomData(finalData)
-  setSourcesShown(sourceData)
-  setTypesShown(typesShown)
+ 
 }

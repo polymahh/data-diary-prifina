@@ -20,6 +20,11 @@ import SideBar from "./Components/SideBar/SideBar";
 import Toolbar from "./Components/Toolbar"
 import Event from "./Components/Event"
 import EventWrapper from "./Components/EventWrapper"
+import GoogleCard from "./Components/source-cards/google-cards/GoogleCard";
+import { useContext } from "react";
+import EventContext from "./context/EventContext";
+import CardsShown from "./Components/CardsShown";
+
 
 
 
@@ -72,8 +77,9 @@ function App() {
     []
   )
   const [view, setView] = useState("week")
-  const [zoomData, setZoomData] = useState(0)
-  const [sourcesShown, setSourcesShown] = useState({})
+  // const [zoomData, setZoomData] = useState(0)
+  const { zoomData,setZoomData } = useContext(EventContext);
+  const [cardsShown, setCardsShown] = useState([])
   const [typesShown, setTypesShown] = useState({})
   const [date, setDate] = useState(new Date())
 
@@ -89,8 +95,18 @@ const onRangeChange = (newRange) => {
   setRange(newRange)}
 const onSelectEvent = (event) => {
   // console.log(event)
-  window.alert(JSON.stringify(event.data))
-  console.log(zoomData)
+  if(!event.showCard){
+    event.showCard = !event.showCard
+    event.showCardIdx = cardsShown.length
+  let arr = [...cardsShown,event]
+  setCardsShown(arr)
+  }else{ 
+    event.showCard = !event.showCard
+    event.showCardIdx = 0
+    let arr = [...cardsShown,event].splice(event.showCardIdx,1)
+    setCardsShown(arr)
+  }
+  
 }
 const getNow = () => {
   console.log("value",1)
@@ -105,7 +121,12 @@ const onDrillDown = (newDate) => {
   }
 const onNavigate = useCallback((newDate) => setDate(newDate), [setDate])
 
+useEffect(() => {
+  getZoomData()
+}, [range]);
 
+useEffect(() => {
+}, [myEventsList]);
 
 const getZoomData = () => {
     // filter events that are in the same week range
@@ -127,14 +148,14 @@ const getZoomData = () => {
         sources[filteredData[i].data.prifinaSourceType].push(filteredData[i].data.prifinaSourceEventType)
       }
     }
-    // weekZoomData(filteredData,sources,setZoomData,setSourcesShown,setTypesShown)
-    // console.log(sources)
-    // console.log(zoomData)
-    // console.log(sourcesShown)
-    // console.log(typesShown)
-  
-
+    weekZoomData(filteredData,sources,setZoomData)
+// console.log(sources)
+    
 }
+
+    console.log(zoomData)
+    console.log(cardsShown)
+    // console.log(typesShown)
 
 const secondsDisplay = (total) => {
   var hours = Math.floor(Math.floor(total / 60)/60)
@@ -152,28 +173,7 @@ const secondsDisplay = (total) => {
   }
   return `${hours}:${mintues}:${seconds}`
 }
-const millisecondsDisplay = (total) => {
-  var totalSeconds = Math.floor(total/1000)
-  var milliseconds = total%1000
-  var hours = Math.floor(Math.floor(totalSeconds / 60)/60)
-  var mintues = Math.floor(totalSeconds / 60)%60
-  var seconds = totalSeconds % 60
-  seconds.toFixed(3)
-  if (seconds < 10){
-    seconds =  `0${seconds}`
-  }
-  if (mintues < 10){
-    mintues =  `0${mintues}`
-  }
-  if (hours < 10){
-    hours =  `0${hours}`
-  }
-  return `${hours}:${mintues}:${seconds}.${milliseconds}`
-}
 
-useEffect(() => {
-  getZoomData()
-}, [range]);
 
 // const dataView = (source, type, aggregateData) => {
 //   switch(view){
@@ -756,7 +756,7 @@ const lengthCalc = (source) => {
 }
 
 const eventPropGetter = (event) => {
-  // eventPropGetter controls event layout and style like color based on category...
+  // eventPropGetter controls event layout and style 
   let className = 'custom-event';
   let bg = '#fff';
   let text = "red"
@@ -852,7 +852,7 @@ const formats =  {
     >
     <Toolbar onNavigate={onNavigate} date={date} onView={onView} localizer={localizer} view={view} onRangeChange={onRangeChange}/>
       
-    <Box  bg={"white"} flexGrow={1} >
+    <Box  bg={"white"} flexGrow={1} position={"relative"} >
       <Calendar className="calendar"
         localizer={localizer}
         events={myEvents}
@@ -874,7 +874,9 @@ const formats =  {
         onNavigate={onNavigate}
         formats={formats}
       />
+    <CardsShown cardsShown={cardsShown} />
     </Box >
+    
     </Flex>
     </Flex>
   );
