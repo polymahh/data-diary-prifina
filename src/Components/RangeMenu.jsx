@@ -20,8 +20,9 @@ const RangeMenu = ({ onView, view, onRangeChange, start, end }) => {
         {`${view[0].toUpperCase()}${view.slice(1)} View`}
       </MenuButton>
       <MenuList zIndex={10}>
-        {menuArr.map((menu) => (
+        {menuArr.map((menu, idx) => (
           <MenuItem
+            key={idx}
             onClick={() => {
               onView(menu);
               onRangeChange({ start, end });

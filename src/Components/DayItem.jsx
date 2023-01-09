@@ -1,17 +1,21 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 
 const DayItem = ({ day, today }) => {
   return (
     <Flex
-      py={2}
       justifyContent={"center"}
       bg={today.includes(day) ? "white" : "bg"}
       color={today.includes(day) ? "primary" : "secondary"}
       borderRadius={"8px"}
     >
-      <Text fontSize={"14px"} noOfLines={1}>
+      <Button
+        variant={"ghost"}
+        fontSize={"14px"}
+        noOfLines={1}
+        _hover={{ background: "none" }}
+      >
         {day}
-      </Text>
+      </Button>
     </Flex>
   );
 };

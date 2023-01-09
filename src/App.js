@@ -42,17 +42,17 @@ var myEventsList = [...ouraEvents,...googleEvents,...whoopEvents]
 const allDayEvents = myEventsList.filter(item => item.allDay).sort((a,b)=> new Date(a.start) - new Date(b.start))
 // non background events
 const arrEvents = myEventsList.filter(item => !item.allDay).sort((a,b)=> new Date(a.start) - new Date(b.start))
-const myEvents = arrEvents.map(event => {return {...event,overlap:0,index:0}})// index for zIndex and overlap for left position
+const myEvents = arrEvents.map(event => {return {...event,overlap:0,index:0}})// index for zIndex and overlap for leftmargin
 
 for(let i = 0 ; i < myEvents.length ; i++ ){
   for(let j = i+1 ; j < myEvents.length; j++){
     let iEnd = new Date(myEvents[i].end)
-    let iStart = new Date(myEvents[i].start)
+    let iStart = new Date(myEvents[i].start).getTime()+ (30*60*1000) //if event occurs in next 30min give it leftmargin
     let jStart = new Date(myEvents[j].start)
     if(  iEnd.getDate() === jStart.getDate() ){
       myEvents[j].index +=1
-      if(jStart < iEnd){
-        // myEvents[i].overlap += 1
+      if(jStart < iStart){
+        
         myEvents[j].overlap = myEvents[i].overlap + 1
       }
     }
@@ -79,7 +79,6 @@ function App() {
   const [view, setView] = useState("week")
   // const [zoomData, setZoomData] = useState(0)
   const { zoomData,setZoomData } = useContext(EventContext);
-  const [cardsShown, setCardsShown] = useState([])
   const [typesShown, setTypesShown] = useState({})
   const [date, setDate] = useState(new Date())
 
@@ -91,23 +90,8 @@ function App() {
 const onView = useCallback((newView) => {
   console.log(newView)
   setView(newView)}, [setView])
-const onRangeChange = (newRange) => {
-  setRange(newRange)}
-const onSelectEvent = (event) => {
-  // console.log(event)
-  if(!event.showCard){
-    event.showCard = !event.showCard
-    event.showCardIdx = cardsShown.length
-  let arr = [...cardsShown,event]
-  setCardsShown(arr)
-  }else{ 
-    event.showCard = !event.showCard
-    event.showCardIdx = 0
-    let arr = [...cardsShown,event].splice(event.showCardIdx,1)
-    setCardsShown(arr)
-  }
-  
-}
+const onRangeChange = useCallback((newRange) => setRange(newRange), [setRange])
+
 const getNow = () => {
   console.log("value",1)
   return (
@@ -119,29 +103,36 @@ const onDrillDown = (newDate) => {
     setDate(new Date(newDate))
     setView("day")
   }
-const onNavigate = useCallback((newDate) => setDate(newDate), [setDate])
+const onNavigate = useCallback((newDate) => {
+  setDate(newDate)
+  onRangeChange({
+    start: localizer.startOf(newDate, "week"),
+    end: localizer.endOf(newDate, "week"),
+  });
+
+}, [setDate])
 
 useEffect(() => {
   getZoomData()
-}, [range]);
+  console.log(range)
+}, [range,date]);
 
 useEffect(() => {
-}, [myEventsList]);
+   console.log(zoomData)
+}, );
 
 const getZoomData = () => {
     // filter events that are in the same week range
     let filteredData = myEventsList.filter((event)=>{
         if (range["start"].getTime() < event.start.getTime()&&range["end"].getTime() > event.start.getTime()){
           return true
-        } else {
-          return false
-        }
+        } 
     })
 
-    //Get All Sources
-    let sources = {}
+    
+    let sources = {} //Get All Sources
     for (var i = 0; i< filteredData.length;i++){
-      //this forloop will format sources >>> sources = {oura : [readiness,sleep...]}
+      //this loop will format sources >>> sources = {oura : [readiness,sleep...]}
       if (sources[filteredData[i].data.prifinaSourceType]===undefined){
         sources[filteredData[i].data.prifinaSourceType] = [filteredData[i].data.prifinaSourceEventType] 
       } else if (!sources[filteredData[i].data.prifinaSourceType].includes(filteredData[i].data.prifinaSourceEventType)) {
@@ -153,9 +144,6 @@ const getZoomData = () => {
     
 }
 
-    console.log(zoomData)
-    console.log(cardsShown)
-    // console.log(typesShown)
 
 const secondsDisplay = (total) => {
   var hours = Math.floor(Math.floor(total / 60)/60)
@@ -757,10 +745,13 @@ const lengthCalc = (source) => {
 
 const eventPropGetter = (event) => {
   // eventPropGetter controls event layout and style 
-  let className = 'custom-event';
   let bg = '#fff';
   let text = "red"
   let border = "red"
+  let ml = `${event.overlap * 40}px`
+  if(view === "month"){
+    ml = "0px"
+  }
   
   if (event.category === 'health') {
     bg = "#E7F0FF"
@@ -785,15 +776,13 @@ const eventPropGetter = (event) => {
   }
   
   return {
-    className: className,
     style: {
       minHeight:"70px",
       color:text,
       backgroundColor: bg,
       borderColor : border,
       minWidth: `${100}%`,
-      // marginLeft:`${!event.overlap && "-50%"}`,
-      left:`${event.overlap * 10}`,
+      marginLeft:ml,
       zIndex : `${event.index}`
     },
   };
@@ -865,7 +854,6 @@ const formats =  {
         view={view}
         onRangeChange={onRangeChange}
         style={{width:"100%" ,padding: " 16px 16px 8px 0px"  }}
-        onSelectEvent={onSelectEvent}
         toolbar={false}
         views={views}
         messages={{ year: "Year" }}
@@ -874,7 +862,6 @@ const formats =  {
         onNavigate={onNavigate}
         formats={formats}
       />
-    <CardsShown cardsShown={cardsShown} />
     </Box >
     
     </Flex>

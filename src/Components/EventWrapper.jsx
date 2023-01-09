@@ -21,23 +21,10 @@ const EventWrapper = ({ event, children }) => {
 
   return (
     <>
-      <VStack border={"1px solid red"}>{children}</VStack>
-      <Box
-        postion={"absolute"}
-        zIndex={180}
-        top={0}
-        left={0}
-        width={"400px"}
-        bg={"red"}
-        display={event.showCard ? "flex" : "none"}
-      >
-        {zoomData && event.source === "Google" && (
-          <GoogleCard
-            type={event.type}
-            aggregateData={zoomData[event.source][event.type]["aggregate"]}
-          />
-        )}
-      </Box>
+      <VStack border={"1px solid red"} height={"-moz-min-content"}>
+        <Text>oooo</Text>
+        {children}
+      </VStack>
     </>
   );
 };

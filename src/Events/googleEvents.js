@@ -127,8 +127,6 @@ const events = [
           source:`${events[i].prifinaSourceType}`,
           type:`${events[i].prifinaSourceEventType}`,
           allDay: false,
-          cardshow:false,
-          showCardIdx:0,
           category:"route",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
           // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))

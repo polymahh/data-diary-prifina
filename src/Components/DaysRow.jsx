@@ -29,7 +29,7 @@ const DaysRow = ({ localizer, view, date }) => {
       borderRadius={"8px"}
     >
       {weekArr.map((day) => (
-        <DayItem day={day} today={today} />
+        <DayItem key={day} day={day} today={today} />
       ))}
     </Grid>
   ) : view === "month" ? (

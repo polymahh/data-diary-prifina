@@ -2,7 +2,7 @@ import { Icon } from "@chakra-ui/react"
 
 const Icon_personal = (props) => {
   return (
-    <Icon viewBox='0 0 14 14' color='gray.500' {...props}>
+    <Icon viewBox='0 0 12 12' color='gray.500' {...props}>
     <path
       fill='currentColor'
       d="M 5.50,0.00
