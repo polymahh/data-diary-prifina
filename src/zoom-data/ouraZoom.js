@@ -210,7 +210,7 @@ ReadinessWeek: {
 };
 
 export function getSleepSummaryWeekData(dataModel, data) {
-    console.log(data)
+    // console.log(data)
     let zoomData = data;
     const zoomModel = dataModels[dataModel].mockup;
     
@@ -299,7 +299,7 @@ export function getSleepSummaryWeekData(dataModel, data) {
 }
 
 export function getActivitySummaryWeekData(dataModel,data) {
-    console.log(data)
+    // console.log(data)
     let zoomData = data;
     const zoomModel = dataModels[dataModel].mockup;
     let overviewData = {};
@@ -385,7 +385,7 @@ export function getActivitySummaryWeekData(dataModel,data) {
 }
 
 export function getReadinessSummaryWeekData(dataModel,data) {
-    console.log(data)
+    // console.log(data)
     let zoomData = data;
     const zoomModel = dataModels[dataModel].mockup;
     

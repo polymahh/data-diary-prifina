@@ -110,6 +110,8 @@ const events = [
       case "Cycle":
         whoopEvents.push({
           title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType}`,
+          source:`${events[i].prifinaSourceType}`,
+          type:`${events[i].prifinaSourceEventType}`,
           allDay: false,
           category:"personal",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
@@ -122,6 +124,8 @@ const events = [
       case "Recovery":
         whoopEvents.push({
           title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType}`,
+          source:`${events[i].prifinaSourceType}`,
+          type:`${events[i].prifinaSourceEventType}`,
           allDay: true,
           category:"health",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
@@ -134,6 +138,8 @@ const events = [
       case "Sleep":
         whoopEvents.push({
           title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType}`,
+          source:`${events[i].prifinaSourceType}`,
+          type:`${events[i].prifinaSourceEventType}`,
           allDay: false,
           category:"personal",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
@@ -146,6 +152,8 @@ const events = [
       case "Workout":
         whoopEvents.push({
           title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType}`,
+          source:`${events[i].prifinaSourceType}`,
+          type:`${events[i].prifinaSourceEventType}`,
           allDay: false,
           category:"fitness",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),

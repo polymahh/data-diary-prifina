@@ -277,7 +277,7 @@ const dataModels = {
 };
 
 export function getWhoopCycleWeekData(dataModel, data) {
-    console.log(data)
+    // console.log(data)
     let zoomData = data;
     const zoomModel = dataModels[dataModel].mockup;
     
@@ -340,7 +340,7 @@ export function getWhoopCycleWeekData(dataModel, data) {
 }
 
 export function getWhoopRecoveryWeekData(dataModel, data) {
-    console.log(data)
+    // console.log(data)
     let zoomData = data;
     const zoomModel = dataModels[dataModel].mockup;
     
@@ -408,7 +408,7 @@ export function getWhoopRecoveryWeekData(dataModel, data) {
 }
 
 export function getWhoopSleepWeekData(dataModel, data) {
-    console.log(data)
+    // console.log(data)
     let zoomData = data;
     const zoomModel = dataModels[dataModel].mockup;
     
@@ -487,7 +487,7 @@ export function getWhoopSleepWeekData(dataModel, data) {
 }
 
 export function getWhoopWorkoutWeekData(dataModel, data) {
-    console.log(data)
+    // console.log(data)
     let zoomData = data;
     const zoomModel = dataModels[dataModel].mockup;
     

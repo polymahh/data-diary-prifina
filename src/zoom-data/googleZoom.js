@@ -58,7 +58,7 @@ const PlacesWeekModel = {
         return getAverage(confidences)
     },
     placeConfidence: (confidences) => {
-        console.log("confidences", confidences)
+        // console.log("confidences", confidences)
         return {
             "HIGH_CONFIDENCE": confidences.filter(x => x === "HIGH_CONFIDENCE").length,
             "MEDIUM_CONFIDENCE": confidences.filter(x => x === "MEDIUM_CONFIDENCE").length,
@@ -120,7 +120,7 @@ const dataModels = {
 };
 
 export function getGoogleActivityWeekData(dataModel, data) {
-    console.log(data)
+    // console.log(data)
     let zoomData = data;
     
     const zoomModel = dataModels[dataModel].mockup;
@@ -174,7 +174,7 @@ export function getGoogleActivityWeekData(dataModel, data) {
 }
 
 export function getGoogleLocationWeekData(dataModel, data) {
-    console.log(data)
+    // console.log(data)
     let zoomData = data;
     const zoomModel = dataModels[dataModel].mockup;
     
@@ -226,11 +226,11 @@ export function getGoogleLocationWeekData(dataModel, data) {
 }
 
 export function getGooglePlacesWeekWeekData(dataModel, data) {
-    console.log(data)
-    console.log(dataModel)
-    console.log(dataModels)
+    // console.log(data)
+    // console.log(dataModel)
+    // console.log(dataModels)
 
-    console.log(dataModels[dataModel])
+    // console.log(dataModels[dataModel])
 
     let zoomData = data;
 
@@ -295,7 +295,7 @@ export function getGooglePlacesWeekWeekData(dataModel, data) {
 }
 
 export function getGoogleRoutesWeekWeekData(dataModel, data) {
-    console.log(data)
+    // console.log(data)
     let zoomData = data;
     const zoomModel = dataModels[dataModel].mockup;
     
