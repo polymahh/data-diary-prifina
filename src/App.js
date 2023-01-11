@@ -87,8 +87,8 @@ const onDrillDown = (newDate) => {
 const onNavigate = useCallback((newDate) => {
   setDate(newDate)
   onRangeChange({
-    start: localizer.startOf(newDate, "week"),
-    end: localizer.endOf(newDate, "week"),
+    start: localizer.startOf(newDate, view),
+    end: localizer.endOf(newDate, view),
   });
 
 }, [setDate])
@@ -184,7 +184,7 @@ const formats =  {
     direction={"column"}
     justifyContent={"start"}
     >
-    <Toolbar onNavigate={onNavigate} date={date} onView={onView} localizer={localizer} view={view} onRangeChange={onRangeChange}/>
+    <Toolbar onNavigate={onNavigate} date={date} onView={onView} localizer={localizer} view={view} onRangeChange={onRangeChange} onDrillDown={onDrillDown}/>
       
     <Box  bg={"white"} flexGrow={1} position={"relative"} >
       <Calendar className="calendar"

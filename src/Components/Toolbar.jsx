@@ -20,8 +20,9 @@ const Toolbar = ({
   onView,
   view,
   onRangeChange,
+  onDrillDown,
 }) => {
-  console.log(localizer);
+  // console.log(localizer);
   const start = localizer.startOf(date, view);
   const end = localizer.endOf(date, view);
   const handleNext = () => {
@@ -142,7 +143,12 @@ const Toolbar = ({
       </HStack>
       <Flex w={"full"} bg={"white"} py={2} px={2} mt={-2}>
         <Box minW={view === "week" ? "62px" : "0px"}>{""}</Box>
-        <DaysRow localizer={localizer} view={view} date={date} />
+        <DaysRow
+          localizer={localizer}
+          view={view}
+          date={date}
+          onDrillDown={onDrillDown}
+        />
       </Flex>
     </VStack>
   );

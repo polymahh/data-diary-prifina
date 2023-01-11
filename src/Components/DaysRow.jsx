@@ -1,7 +1,7 @@
 import { Box, Flex, Grid, HStack, Text } from "@chakra-ui/react";
 import DayItem from "./DayItem";
 
-const DaysRow = ({ localizer, view, date }) => {
+const DaysRow = ({ localizer, view, date, onDrillDown }) => {
   const monthArr = [
     "Sunday",
     "Monday",
@@ -13,11 +13,10 @@ const DaysRow = ({ localizer, view, date }) => {
   ];
   const weekArr = [];
 
-  const today = localizer.format(date, "dddd DD");
   const start = localizer.startOf(date, "week");
   for (let i = 0; i < 7; i++) {
     const day = localizer.add(start, i, "day");
-    weekArr.push(localizer.format(day, "dddd DD"));
+    weekArr.push(day);
   }
   return view === "week" ? (
     <Grid
@@ -29,7 +28,12 @@ const DaysRow = ({ localizer, view, date }) => {
       borderRadius={"8px"}
     >
       {weekArr.map((day) => (
-        <DayItem key={day} day={day} today={today} />
+        <DayItem
+          key={day}
+          day={day}
+          localizer={localizer}
+          onDrillDown={onDrillDown}
+        />
       ))}
     </Grid>
   ) : view === "month" ? (
@@ -42,7 +46,12 @@ const DaysRow = ({ localizer, view, date }) => {
       borderRadius={"8px"}
     >
       {monthArr.map((day) => (
-        <DayItem day={day} today={today} />
+        <DayItem
+          key={day}
+          day={day}
+          localizer={localizer}
+          onDrillDown={() => {}}
+        />
       ))}
     </Grid>
   ) : null;
