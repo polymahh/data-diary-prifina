@@ -10,10 +10,13 @@
   border-radius: $event-border-radius;
   color: $event-color;
   cursor: pointer;
+  
   width: 100%;
   text-align: left;
   display: grid; //new
   align-items: center;
+
+
 
   .rbc-slot-selecting & {
     cursor: inherit;
@@ -23,6 +26,8 @@
   &.rbc-selected {
     background-color: darken($event-bg, 10%);
   }
+
+ 
 
   &:focus {
     outline: 5px auto $event-outline;

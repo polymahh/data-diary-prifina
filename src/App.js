@@ -162,9 +162,10 @@ const eventPropGetter = (event) => {
       color:text,
       backgroundColor: bg,
       borderColor : border,
-      minWidth: `${100}%`,
+      minWidth: `calc(100% - ${ml})`,
       marginLeft:ml,
-      zIndex : `${event.index}`
+      zIndex : `${event.index}`,
+      // ":hover":{borderWidth:"2px",borderColor : "red"}
     },
   };
 }
@@ -192,7 +193,7 @@ const formats =  {
         events={myEvents}
         components={{event:Event}}
         eventPropGetter={eventPropGetter}
-        backgroundEvents={allDayEvents}
+        // backgroundEvents={allDayEvents}
         startAccessor="start"
         endAccessor="end"
         onView={onView}

@@ -1,9 +1,7 @@
-import { PhoneIcon } from "@chakra-ui/icons";
 import {
   Box,
   Flex,
   Text,
-  VStack,
   Icon,
   Popover,
   PopoverTrigger,
@@ -14,20 +12,22 @@ import {
   PopoverCloseButton,
   PopoverBody,
   PopoverFooter,
+  VStack,
 } from "@chakra-ui/react";
 import Icon_business from "../assets/business_icon";
 import Icon_health from "../assets/health_icon";
 import Icon_fitness from "../assets/fitness_icon";
 import Icon_route from "../assets/route_icon";
 import Icon_personal from "../assets/personal_icon";
-import GoogleCard from "./source-cards/google-cards/GoogleCard";
 import { useState } from "react";
 import EventContext from "../context/EventContext";
 import { useContext } from "react";
 import CardsShown from "./CardsShown";
+import EventBody from "./EventBody";
+import EventPin from "./EventPin";
 
 const Event = ({ event }) => {
-  const [showCard, setShowCArd] = useState(false);
+  const [pinned, setPinned] = useState(false);
   const icons = {
     "icon business": Icon_business,
     "icon health": Icon_health,
@@ -40,33 +40,26 @@ const Event = ({ event }) => {
 
   return (
     <>
-      <Popover>
+      <Popover
+        placement="right"
+        trigger="hover"
+        isOpen={pinned ? true : undefined}
+        arrowSize={"none"}
+        gutter={13}
+      >
         <PopoverTrigger>
-          <VStack alignItems={"flex-start"} left={0} position={"relative"}>
-            <Flex gap={1} alignItems={"flex-start"}>
-              <Box borderRadius={"6px"} bg={`${event.category}.500`}>
-                <Icon
-                  as={icons[`icon ${event.category}`]}
-                  p={1}
-                  boxSize={6}
-                  color={"gray.100"}
-                />
-              </Box>
-              <Text pt={1} overflowWrap={"break-word"}>
-                {event.title}
-              </Text>
-            </Flex>
-
-            <Flex>
-              <Text>{`${new Date(event.start).toLocaleString()}`}</Text>
-            </Flex>
+          <VStack alignItems={"flex-start"} onClick={() => setPinned(!pinned)}>
+            <EventPin pinned={pinned} />
+            <EventBody event={event} icon={icons[`icon ${event.category}`]} />
           </VStack>
         </PopoverTrigger>
         <Portal>
           <PopoverContent>
             <PopoverArrow />
             <PopoverHeader>
-              <Flex gap={4} alignItems={"flex-start"}>
+              <EventPin pinned={pinned} />
+
+              <Flex gap={2} alignItems={"center"}>
                 <Box borderRadius={"6px"} bg={`${event.category}.500`}>
                   <Icon
                     as={icons[`icon ${event.category}`]}
@@ -75,10 +68,33 @@ const Event = ({ event }) => {
                     color={"gray.100"}
                   />
                 </Box>
-                <Text overflowWrap={"break-word"}>{event.title}</Text>
+                <Flex
+                  direction={"column"}
+                  gap={0}
+                  color={`${event.category}.500`}
+                >
+                  <Text
+                    fontSize={"14px"}
+                    fontWeight={500}
+                    overflowWrap={"break-word"}
+                  >
+                    {event.title}
+                  </Text>
+                  <Text fontSize={"12px"}>
+                    {`${event.start.toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hourCycle: "h12",
+                    })} - ${event.end.toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hourCycle: "h12",
+                    })}`}
+                  </Text>
+                </Flex>
               </Flex>
             </PopoverHeader>
-            <PopoverCloseButton />
+            <PopoverCloseButton onMouseUp={() => setPinned(false)} />
             <PopoverBody>
               <CardsShown event={event} />
             </PopoverBody>

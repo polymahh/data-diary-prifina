@@ -57,7 +57,7 @@ const Toolbar = ({
       spacing={0}
       position={"-webkit-sticky"}
       style={{
-        zIndex: 200,
+        zIndex: 100,
         position: "sticky",
         top: "-1px",
       }}

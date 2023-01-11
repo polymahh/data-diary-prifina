@@ -20,6 +20,7 @@ const theme = extendTheme({
       bgSecondary:"#E8E5F2",
       border:"#EEEBF8",
       dotedBr:"#ECE9F9",
+      pin:"#F05D5D",
       // health
       healthPrimary:"#73A1F6",
       healthBG:"#E7F0FF",
