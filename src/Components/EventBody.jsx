@@ -8,13 +8,13 @@ const EventBody = ({ event, icon, setPinned, pinned }) => {
         <Box borderRadius={"6px"} bg={`${event.category}.500`}>
           <Icon as={icon} p={1} boxSize={6} color={"gray.100"} />
         </Box>
-        <Text pt={1} overflowWrap={"break-word"}>
-          {event.title}
-        </Text>
+        <Text overflowWrap={"break-word"}>{event.source}</Text>
       </Flex>
 
       <Flex>
-        <Text>{`${new Date(event.start).toLocaleString()}`}</Text>
+        <Text>
+          {event.allDay ? null : `${new Date(event.start).toLocaleString()}`}
+        </Text>
       </Flex>
     </>
   );

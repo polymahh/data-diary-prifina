@@ -45,10 +45,15 @@ const Event = ({ event }) => {
         trigger="hover"
         isOpen={pinned ? true : undefined}
         arrowSize={"none"}
-        gutter={13}
+        gutter={14}
+        offset={[120, 14]}
       >
         <PopoverTrigger>
-          <VStack alignItems={"flex-start"} onClick={() => setPinned(!pinned)}>
+          <VStack
+            position={"relative"}
+            alignItems={"flex-start"}
+            onClick={() => setPinned(!pinned)}
+          >
             <EventPin pinned={pinned} />
             <EventBody event={event} icon={icons[`icon ${event.category}`]} />
           </VStack>

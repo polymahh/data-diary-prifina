@@ -130,8 +130,8 @@ const events = [
           category:"health",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
           // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-          start: new Date(events[i].created_at),
-          end: new Date(events[i].created_at),
+          start: new Date(`${events[i].created_at}`),
+          end: new Date(`${events[i].created_at}`),
           data: events[i],
         })
         break

@@ -21,6 +21,7 @@
 .rbc-time-gutter,
 .rbc-header-gutter {
   flex: none;
+  
 }
 
 .rbc-label {
@@ -39,8 +40,11 @@
     right: 0;
     top: 0;
     overflow: hidden;
-    border-right-color: rgba(0, 0, 0, 0.11);
-    border-right-width: 1px;
+    margin-top: 4px;
+    margin-left: 8px;
+    border-right: 1px dashed $calendar-border;
+    // border-right-color: rgba(0, 0, 0, 0.11);
+    // border-top-width: 1px;
 
     &.rbc-rtl {
       left: 10px;

@@ -50,9 +50,13 @@
 }
 
 .rbc-time-header {
-  display: none;
+  display: flex;
   flex: 0 0 auto; // should not shrink below height
   flex-direction: row;
+
+  // &:first-child{
+  //   margin-left: 6px;//new
+  // }
 
   &.rbc-overflowing {
     border-right: 1px solid $cell-border;
@@ -78,6 +82,7 @@
   // > .rbc-gutter-cell + * {
   //   width: 100%;
   // }
+ 
 }
 
 .rbc-time-header-cell-single-day {
@@ -90,6 +95,10 @@
   min-width: 0;
   flex-direction: column;
   border-left: 1px solid $cell-border;
+
+  .rbc-row.rbc-time-header-cell{
+    display: none; //new
+  }
 
   .rbc-rtl & {
     border-left-width: 0;
@@ -107,8 +116,8 @@
   flex: 1 0 0%;
   align-items: flex-start;
   width: 100%;
-  // border-top: 2px solid $calendar-border; new
-  gap: 6px;
+  border-top: 2px solid $calendar-border;
+  // gap: 6px;
   overflow-y: auto;
   position: relative;
 
@@ -117,7 +126,7 @@
   }
 
   > * + * > * {
-    border-left: 1px dashed $cell-border;
+    // border-left: 1px dashed $cell-border;
   }
 
   .rbc-rtl & > * + * > * {

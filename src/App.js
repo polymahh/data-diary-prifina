@@ -28,10 +28,11 @@ import EventContext from "./context/EventContext";
 // formating and sorting the events
 var myEventsList = [...ouraEvents,...googleEvents,...whoopEvents]
 // background event 
-const allDayEvents = myEventsList.filter(item => item.allDay).sort((a,b)=> new Date(a.start) - new Date(b.start))
+// const allDayEvents = myEventsList.filter(item => item.allDay).sort((a,b)=> new Date(a.start) - new Date(b.start))
+const allEvents = myEventsList.sort((a,b)=> new Date(a.start) - new Date(b.start))
 // non background events
-const arrEvents = myEventsList.filter(item => !item.allDay).sort((a,b)=> new Date(a.start) - new Date(b.start))
-const myEvents = arrEvents.map(event => {return {...event,overlap:0,index:0}})// index for zIndex and overlap for leftmargin
+// const arrEvents = myEventsList.filter(item => !item.allDay).sort((a,b)=> new Date(a.start) - new Date(b.start))
+const myEvents = allEvents.map(event => {return {...event,overlap:0,index:0}})// index for zIndex and overlap for leftmargin
 
 for(let i = 0 ; i < myEvents.length ; i++ ){
   for(let j = i+1 ; j < myEvents.length; j++){
@@ -158,11 +159,11 @@ const eventPropGetter = (event) => {
   
   return {
     style: {
-      minHeight:"70px",
+      minHeight:"40px",
       color:text,
       backgroundColor: bg,
       borderColor : border,
-      minWidth: `calc(100% - ${ml})`,
+      minWidth: `calc(100% - 8px - ${ml})`,
       marginLeft:ml,
       zIndex : `${event.index}`,
       // ":hover":{borderWidth:"2px",borderColor : "red"}

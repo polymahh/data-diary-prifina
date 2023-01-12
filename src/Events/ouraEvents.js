@@ -282,7 +282,7 @@ const events = [
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
           // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
           start: new Date(`${events[i].summary_date}T00:00:00`),
-          end: new Date(`${events[i].summary_date}T23:59:59`),
+          end: new Date(`${events[i].summary_date}T00:00:00`),
           data: events[i],
         })
         break
@@ -309,8 +309,8 @@ const events = [
           category:"health",
           // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
           // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-          start: new Date(events[i].summary_date),
-          end: new Date(events[i].summary_date),
+          start: new Date(`${events[i].summary_date}T00:00:00`),
+          end: new Date(`${events[i].summary_date}T00:00:00`),
           data: events[i],
         })
         break
