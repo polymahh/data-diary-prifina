@@ -66,7 +66,7 @@ function App() {
     }),
     []
   )
-  const { zoomData,setZoomData } = useContext(EventContext);
+  const { zoomData,setZoomData,events,handleEvents,labels } = useContext(EventContext);
 
   const [view, setView] = useState("week")
   const [date, setDate] = useState(new Date())
@@ -95,9 +95,11 @@ const onNavigate = useCallback((newDate) => {
 }, [setDate])
 
 useEffect(() => {
+  handleEvents()
   getZoomData()
   console.log(range)
-}, [range,date]);
+  console.log(events)
+}, [range,date,labels]);
 
 console.log(zoomData)
 
@@ -191,7 +193,7 @@ const formats =  {
     <Box  bg={"white"} flexGrow={1} position={"relative"} >
       <Calendar className="calendar"
         localizer={localizer}
-        events={myEvents}
+        events={events}
         components={{event:Event}}
         eventPropGetter={eventPropGetter}
         // backgroundEvents={allDayEvents}

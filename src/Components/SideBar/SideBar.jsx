@@ -1,3 +1,4 @@
+import { Labels } from "./Labels";
 import { CalendarIcon, RepeatIcon } from "@chakra-ui/icons";
 import { Box, Checkbox, Flex, Image, Text, VStack } from "@chakra-ui/react";
 const SideBar = () => {
@@ -91,26 +92,7 @@ const SideBar = () => {
           Predictions
         </Checkbox>
       </VStack>
-      <VStack alignItems={"start"} gap={4}>
-        <Text color={"secondary"} fontSize={"20px"} fontWeight={500}>
-          LABELS
-        </Text>
-        <Checkbox colorScheme={"health"} defaultChecked>
-          Health
-        </Checkbox>
-        <Checkbox colorScheme={"fitness"} defaultChecked>
-          Fitness
-        </Checkbox>
-        <Checkbox colorScheme={"route"} defaultChecked>
-          Route
-        </Checkbox>
-        <Checkbox colorScheme={"business"} defaultChecked>
-          Business
-        </Checkbox>
-        <Checkbox colorScheme={"personal"} defaultChecked>
-          Personal
-        </Checkbox>
-      </VStack>
+      <Labels />
     </Flex>
   );
 };
