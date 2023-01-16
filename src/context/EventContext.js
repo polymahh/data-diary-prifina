@@ -34,6 +34,7 @@ export const EventProvider = ({children})=>{
 
     const [zoomData,setZoomData] = useState(null)
     const [events,setEvents] = useState(myEvents)
+    const [footerEvents,setFooterEvents] = useState(allDayEvents)
     const [labels,setLabels] = useState(["health","fitness","route","business","personal"])
 
 
@@ -60,9 +61,9 @@ const handleEvents =()=>{
   }
 }
 
-
+// console.log("footer",footerEvents)
     return (
-        <EventContext.Provider value={{zoomData,setZoomData,events,labels,handleLabels,handleEvents}}>
+        <EventContext.Provider value={{zoomData,setZoomData,events,labels,handleLabels,handleEvents,footerEvents}}>
             {children}
         </EventContext.Provider>
     )

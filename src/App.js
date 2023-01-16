@@ -1,7 +1,7 @@
 // styles 
 import "./App.css"
 import "./sass/styles.scss"
-import { Box, Flex,} from "@chakra-ui/react"
+import { Box, Flex, Grid, SimpleGrid,} from "@chakra-ui/react"
 // react
 import { useState,useCallback, useEffect,useMemo } from "react";
 // calendar library
@@ -23,16 +23,17 @@ import Event from "./Components/Event"
 // context
 import { useContext } from "react";
 import EventContext from "./context/EventContext";
+import Footer from "./Components/footer/Footer";
 
 
 // formating and sorting the events
 var myEventsList = [...ouraEvents,...googleEvents,...whoopEvents]
 // background event 
-// const allDayEvents = myEventsList.filter(item => item.allDay).sort((a,b)=> new Date(a.start) - new Date(b.start))
-const allEvents = myEventsList.sort((a,b)=> new Date(a.start) - new Date(b.start))
+const allDayEvents = myEventsList.filter(item => item.allDay).sort((a,b)=> new Date(a.start) - new Date(b.start))
+// const allEvents = myEventsList.sort((a,b)=> new Date(a.start) - new Date(b.start))
 // non background events
-// const arrEvents = myEventsList.filter(item => !item.allDay).sort((a,b)=> new Date(a.start) - new Date(b.start))
-const myEvents = allEvents.map(event => {return {...event,overlap:0,index:0}})// index for zIndex and overlap for leftmargin
+const arrEvents = myEventsList.filter(item => !item.allDay).sort((a,b)=> new Date(a.start) - new Date(b.start))
+const myEvents = arrEvents.map(event => {return {...event,overlap:0,index:0}})// index for zIndex and overlap for leftmargin
 
 for(let i = 0 ; i < myEvents.length ; i++ ){
   for(let j = i+1 ; j < myEvents.length; j++){
@@ -132,7 +133,7 @@ const eventPropGetter = (event) => {
   let bg = '#fff';
   let text = "red"
   let border = "red"
-  let ml = `${event.overlap * 40}px`
+  let ml = `${(event.overlap * 40)+8}px`
   if(view === "month"){
     ml = "0px"
   }
@@ -165,12 +166,20 @@ const eventPropGetter = (event) => {
       color:text,
       backgroundColor: bg,
       borderColor : border,
-      minWidth: `calc(100% - 8px - ${ml})`,
+      minWidth: `calc(100% - ${ml})`,
       marginLeft:ml,
       zIndex : `${event.index}`,
       // ":hover":{borderWidth:"2px",borderColor : "red"}
     },
   };
+}
+// overwrite the bgcolor of default curent day 
+const dayPropGetter = () =>{
+  return {
+    style:{
+      backgroundColor:"white",
+    }
+  }
 }
 // foramt hours column in day and week views like this : 00 AM
 const formats =  {
@@ -181,20 +190,23 @@ const formats =  {
 
 
   return (
-    <Flex>
+    <Flex width={"100vw"} pos={"relative"}>
     <SideBar/>
-    <Flex
-    flexGrow={1}
-    direction={"column"}
-    justifyContent={"start"}
+    <SimpleGrid
+    flexGrow={"1"}
+    // direction={"column"}
+    templateRows={"1fr quto"}
+    templateColumns={"1fr"}
+    height={"100vh"}
     >
-    <Toolbar onNavigate={onNavigate} date={date} onView={onView} localizer={localizer} view={view} onRangeChange={onRangeChange} onDrillDown={onDrillDown}/>
+    <Toolbar onNavigate={onNavigate} date={date} onView={onView} localizer={localizer} view={view} onRangeChange={onRangeChange} onDrillDown={onDrillDown} />
       
-    <Box  bg={"white"} flexGrow={1} position={"relative"} >
+    <Box  bg={"white"} overflow={"auto"}  >
       <Calendar className="calendar"
         localizer={localizer}
         events={events}
         components={{event:Event}}
+        dayPropGetter={dayPropGetter}
         eventPropGetter={eventPropGetter}
         // backgroundEvents={allDayEvents}
         startAccessor="start"
@@ -202,7 +214,7 @@ const formats =  {
         onView={onView}
         view={view}
         onRangeChange={onRangeChange}
-        style={{width:"100%" ,padding: " 16px 16px 8px 0px"  }}
+        style={{width:"100%" ,padding: " 16px 16px 8px 0px" }}
         toolbar={false}
         views={views}
         messages={{ year: "Year" }}
@@ -212,8 +224,11 @@ const formats =  {
         formats={formats}
       />
     </Box >
-    
+    <Flex  p={2} width={"full"} paddingLeft={"82px"} paddingRight={"26px"} paddingBottom={"12px"} marginTop={"-45px"} zIndex={100} >
+        <Footer view={view} localizer={localizer} date={date}/>
     </Flex>
+    
+    </SimpleGrid>
     </Flex>
   );
 }

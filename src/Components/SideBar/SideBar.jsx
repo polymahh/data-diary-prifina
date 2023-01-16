@@ -7,13 +7,13 @@ const SideBar = () => {
       minW={"fit-content"}
       py={9}
       px={[4, 10, 16]}
-      h={"full"}
-      spacing={0}
-      position={"-webkit-sticky"}
-      overflowY={"scroll"}
+      h={"100vh"}
+      // spacing={0}
+      // position={"-webkit-sticky"}
+      overflow={"scroll"}
       style={{
         zIndex: 5,
-        position: "sticky",
+        // position: "sticky",
         top: "-1px",
         scrollbarWidth: "none",
         msOverflowStyle: "none",
