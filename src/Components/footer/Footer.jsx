@@ -20,6 +20,7 @@ const Footer = ({ localizer, date, view }) => {
       templateColumns="repeat(7, 1fr)"
       bg={"white"}
       p={2}
+      pt={0}
       gap={2}
       borderRadius={"8px"}
       width={"full"}

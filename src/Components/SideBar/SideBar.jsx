@@ -1,6 +1,15 @@
 import { Labels } from "./Labels";
 import { CalendarIcon, RepeatIcon } from "@chakra-ui/icons";
-import { Box, Checkbox, Flex, Image, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Checkbox,
+  Divider,
+  Flex,
+  Image,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import CalendarTabs from "./CalendarTabs";
 const SideBar = () => {
   return (
     <Flex
@@ -8,12 +17,9 @@ const SideBar = () => {
       py={9}
       px={[4, 10, 16]}
       h={"100vh"}
-      // spacing={0}
-      // position={"-webkit-sticky"}
       overflow={"scroll"}
       style={{
         zIndex: 5,
-        // position: "sticky",
         top: "-1px",
         scrollbarWidth: "none",
         msOverflowStyle: "none",
@@ -24,7 +30,7 @@ const SideBar = () => {
         },
       }}
       direction={"column"}
-      gap={16}
+      gap={8}
     >
       <Flex w={"max-content"}>
         <Box>
@@ -40,44 +46,9 @@ const SideBar = () => {
         </Text>
       </Flex>
 
-      <VStack alignItems={"start"}>
-        <Flex
-          alignItems={"center"}
-          gap={2}
-          px={4}
-          py={2}
-          borderLeftWidth={"3px"}
-          borderLeftColor={"primary"}
-          color={"primary"}
-        >
-          <CalendarIcon
-            boxSize={5}
-            color={"white"}
-            bg={"primary"}
-            p={1}
-            borderRadius={"4px"}
-          />
-          <Text fontWeight={500}>Calendar</Text>
-        </Flex>
-        <Flex
-          alignItems={"center"}
-          gap={2}
-          px={4}
-          py={2}
-          borderLeftWidth={"3px"}
-          borderLeftColor={"bg"}
-          color={"secondary"}
-        >
-          <RepeatIcon
-            boxSize={5}
-            color={"secondary"}
-            bg={"bgSecondary"}
-            p={1}
-            borderRadius={"4px"}
-          />
-          <Text fontWeight={500}>Compare</Text>
-        </Flex>
-      </VStack>
+      {/* tabs menu */}
+      <CalendarTabs />
+      <Divider />
       <VStack alignItems={"start"} gap={4}>
         <Text color={"secondary"} fontSize={"20px"} fontWeight={500}>
           VIEW
@@ -92,6 +63,7 @@ const SideBar = () => {
           Predictions
         </Checkbox>
       </VStack>
+      <Divider />
       <Labels />
     </Flex>
   );

@@ -116,7 +116,7 @@
   flex: 1 0 0%;
   align-items: flex-start;
   width: 100% ;
-  gap: 8px; //new
+  // gap: 8px; //new
   overflow-y: auto;
   position: relative;
 
@@ -142,7 +142,7 @@
 
 .rbc-current-time-indicator {
   position: absolute;
-  z-index: 199;
+  z-index: 99;
   left: 0;
   right: 0;
   height: 3px;

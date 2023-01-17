@@ -103,7 +103,6 @@ const Event = ({ event }) => {
             <PopoverBody>
               <CardsShown event={event} />
             </PopoverBody>
-            <PopoverFooter>This is the footer</PopoverFooter>
           </PopoverContent>
         </Portal>
       </Popover>

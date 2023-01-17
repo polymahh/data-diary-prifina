@@ -20,20 +20,14 @@ const FooterPopover = ({ dayEvents }) => {
   return (
     <Popover placement={"top"}>
       <PopoverTrigger>
-        <Center
-          px={4}
-          border={"1px"}
-          borderBottomRadius={"md"}
-          borderTop={"0px"}
-          borderColor={"white"}
-        >
+        <Center px={4}>
           <ChevronUpIcon />
         </Center>
       </PopoverTrigger>
       <PopoverContent>
         <PopoverArrow />
         <PopoverCloseButton />
-        <PopoverHeader>All Day Events</PopoverHeader>
+        <PopoverHeader>All day events</PopoverHeader>
         <PopoverBody>
           <Flex gap={2} direction={"column"}>
             {dayEvents &&
