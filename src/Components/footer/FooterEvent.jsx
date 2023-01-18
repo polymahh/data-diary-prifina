@@ -16,7 +16,7 @@ import Icon_fitness from "../../assets/fitness_icon";
 import Icon_route from "../../assets/route_icon";
 import Icon_personal from "../../assets/personal_icon";
 import Icon_business from "../../assets/business_icon";
-import CardsShown from "../CardsShown";
+import EventPopover from "../event/EventPopover";
 const icons = {
   "icon business": Icon_business,
   "icon health": Icon_health,
@@ -47,7 +47,7 @@ const FooterEvent = ({ event }) => {
           <PopoverCloseButton />
           <PopoverHeader>{event.type}</PopoverHeader>
           <PopoverBody>
-            <CardsShown event={event} />
+            <EventPopover event={event} />
           </PopoverBody>
         </PopoverContent>
       </Popover>

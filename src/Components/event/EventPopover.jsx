@@ -1,12 +1,11 @@
 import { Box, Text } from "@chakra-ui/react";
-import { useEffect } from "react";
 import { useContext } from "react";
-import EventContext from "../context/EventContext";
-import GoogleCard from "./source-cards/google-cards/GoogleCard";
-import OuraCard from "./source-cards/oura-cards/OuraCard";
-import WhoopCard from "./source-cards/whoop-cards/WhoopCard";
+import EventContext from "../../context/EventContext";
+import GoogleCard from "../source-cards/google-cards/GoogleCard";
+import OuraCard from "../source-cards/oura-cards/OuraCard";
+import WhoopCard from "../source-cards/whoop-cards/WhoopCard";
 
-const CardsShown = ({ event }) => {
+const EventPopover = ({ event }) => {
   const { zoomData } = useContext(EventContext);
 
   return event.source === "Google" ? (
@@ -40,4 +39,4 @@ const CardsShown = ({ event }) => {
     <Box>no zoom data</Box>
   );
 };
-export default CardsShown;
+export default EventPopover;

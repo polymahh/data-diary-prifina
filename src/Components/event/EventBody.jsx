@@ -1,7 +1,6 @@
-import { Box, Flex, Text, Icon, Center } from "@chakra-ui/react";
-import pin_icon from "../assets/pin_icon";
+import { Box, Flex, Text, Icon } from "@chakra-ui/react";
 
-const EventBody = ({ event, icon, setPinned, pinned }) => {
+const EventBody = ({ event, icon }) => {
   return (
     <>
       <Flex gap={1} alignItems={"flex-start"}>

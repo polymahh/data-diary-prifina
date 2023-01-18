@@ -18,7 +18,7 @@ import {weekZoomData} from './range-zoom-data/week-zoom-data'
 // components
 import SideBar from "./Components/SideBar/SideBar";
 import Toolbar from "./Components/Toolbar"
-import Event from "./Components/Event"
+import Event from "./Components/event/Event"
 
 // context
 import { useContext } from "react";

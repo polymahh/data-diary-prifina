@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, HStack, Text } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 import DayItem from "./DayItem";
 
 const DaysRow = ({ localizer, view, date, onDrillDown }) => {

@@ -14,15 +14,15 @@ import {
   PopoverFooter,
   VStack,
 } from "@chakra-ui/react";
-import Icon_business from "../assets/business_icon";
-import Icon_health from "../assets/health_icon";
-import Icon_fitness from "../assets/fitness_icon";
-import Icon_route from "../assets/route_icon";
-import Icon_personal from "../assets/personal_icon";
+import Icon_business from "../../assets/business_icon";
+import Icon_health from "../../assets/health_icon";
+import Icon_fitness from "../../assets/fitness_icon";
+import Icon_route from "../../assets/route_icon";
+import Icon_personal from "../../assets/personal_icon";
 import { useState } from "react";
-import EventContext from "../context/EventContext";
+import EventContext from "../../context/EventContext";
 import { useContext } from "react";
-import CardsShown from "./CardsShown";
+import EventPopover from "./EventPopover";
 import EventBody from "./EventBody";
 import EventPin from "./EventPin";
 
@@ -101,7 +101,7 @@ const Event = ({ event }) => {
             </PopoverHeader>
             <PopoverCloseButton onMouseUp={() => setPinned(false)} />
             <PopoverBody>
-              <CardsShown event={event} />
+              <EventPopover event={event} />
             </PopoverBody>
           </PopoverContent>
         </Portal>

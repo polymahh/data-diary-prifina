@@ -1,5 +1,5 @@
 import { Flex, Icon } from "@chakra-ui/react";
-import pin_icon from "../assets/pin_icon";
+import pin_icon from "../../assets/pin_icon";
 
 const EventPin = ({ pinned }) => {
   return (
